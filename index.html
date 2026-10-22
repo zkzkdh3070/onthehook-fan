@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>온더훅 (팬게임)</title>
+<style>
+:root{--teal:#4ac9c4;--teal2:#6dd3d0;--bg:#f7f7f7;--line:#eee;--txt:#222;--sub:#999;--bub:#f2f2f2;--red:#f01010;--yel:#e8ff3a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#2a2e33;--line:#3a3f45;--txt:#eee;--sub:#8a9199;--bub:#3b4046}body,#app{background:#1f2327}}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:"Gaegu","Jua","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--txt);background:#ddd;display:flex;justify-content:center}
+#app{width:100%;max-width:480px;height:100dvh;background:#fff;display:flex;flex-direction:column;overflow:hidden}
+header{background:var(--teal);color:#fff;height:64px;padding:env(safe-area-inset-top) 18px 0;box-sizing:content-box;display:flex;align-items:center;gap:12px;font-size:22px;flex:none}
+header .n{color:var(--yel);margin-left:6px}
+header .sp{flex:1}
+header button{background:none;border:0;color:#fff;cursor:pointer;padding:6px;display:flex}
+header button:focus-visible,.tab:focus-visible,.row:focus-visible,.add:focus-visible{outline:3px solid #fff8;outline-offset:2px}
+.back{font-size:30px;line-height:1}
+nav{display:flex;background:var(--bg);flex:none}
+.tab{flex:1;height:56px;border:0;background:none;position:relative;cursor:pointer;border-bottom:3px solid transparent;display:flex;align-items:center;justify-content:center}
+.tab.on{border-color:var(--teal)}
+.badge{position:absolute;top:26px;left:calc(50% + 6px);min-width:24px;height:24px;border-radius:12px;background:var(--red);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;padding:0 6px}
+main{flex:1;overflow-y:auto;overscroll-behavior:contain}
+.sec{color:var(--teal);font-size:17px;padding:16px 14px 6px;margin:0 12px;border-bottom:2px solid var(--line)}
+.row{display:flex;align-items:center;gap:14px;padding:10px 14px;margin:0 12px;border:0;border-bottom:2px solid var(--line);background:none;width:calc(100% - 24px);text-align:left;font:inherit;color:inherit;cursor:pointer;min-height:76px}
+.row:last-child{border-bottom:0}
+.av{width:56px;height:56px;border-radius:50%;flex:none;background:var(--teal) center/cover;display:flex;align-items:center;justify-content:center}
+.nm{font-size:20px}
+.mid{flex:1;min-width:0}
+.pv{color:var(--sub);font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st{background:var(--bub);border-radius:18px 18px 18px 4px;padding:8px 16px;font-size:15px;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st:empty{display:none}
+.cnt{background:var(--red);color:#fff;min-width:30px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.add{width:56px;height:46px;border-radius:10px;border:3px solid var(--line);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.add:disabled{opacity:.4}
+.empty{color:var(--sub);text-align:center;padding:60px 20px;font-size:17px}
+.mail{padding:14px 26px;border-bottom:2px solid var(--line);cursor:pointer}
+.mail b{font-weight:400;font-size:19px}.mail.un b::after{content:" ●";color:var(--red);font-size:12px}
+.mail p{color:var(--sub);margin-top:6px;display:none;font-size:16px}.mail.open p{display:block}
+#chat{padding:12px 14px 20px}
+.m{display:flex;gap:10px;margin:14px 0;align-items:flex-start}
+.m.me{justify-content:flex-end}
+.m .av{width:46px;height:46px}
+.m .who{font-size:15px;margin-bottom:3px}
+.bb{background:var(--bub);border-radius:4px 16px 16px 16px;padding:10px 16px;font-size:19px;word-break:break-word;max-width:100%}
+.m.me .bb{background:var(--teal2);color:#fff;border-radius:16px 4px 16px 16px}
+.m>div{max-width:72%}
+form{display:flex;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));flex:none}
+form input{flex:1;min-width:0;height:48px;border:3px solid var(--line);border-radius:8px;padding:0 12px;font:inherit;font-size:18px;background:transparent;color:inherit}
+form input:focus{outline:2px solid var(--teal);border-color:transparent}
+form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var(--teal);color:#fff;font:inherit;font-size:19px;cursor:pointer}
+#choices{display:flex;flex-direction:column;gap:8px;padding:10px 12px calc(12px + env(safe-area-inset-bottom));flex:none;border-top:2px solid var(--line)}#choices[hidden]{display:none}.ch{border:3px solid var(--teal);background:transparent;color:var(--txt);border-radius:12px;padding:12px 16px;font:inherit;font-size:19px;cursor:pointer;text-align:left}.ch:hover,.ch:focus-visible{background:var(--teal);color:#fff;outline:0}
+@media (prefers-reduced-motion:no-preference){.m{animation:pop .18s ease-out}@keyframes pop{from{opacity:0;transform:translateY(6px)}}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header id="hd"></header>
+  <nav id="nav" role="tablist"></nav>
+  <main id="main"></main>
+  <div id="choices" hidden></div>
+</div>
+<script src="data.js"></script>
+<script>
+const D = window.GAME_DATA, KEY = "onhook_v" + D.version;
+const $ = s => document.querySelector(s);
+const all = [...D.characters, ...D.recommended];
+const byId = id => all.find(c => c.id === id);
+
+/* ---------- 저장 상태 ---------- */
+let S = null;
+try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+if (!S) { S = { added: [], chats: {}, unread: {}, pos: {}, mail: D.mail.map(m => !!m.read) }; D.characters.forEach(ensure); }
+function ensure(c) {
+  const sc = c.script, n = sc && sc.nodes[sc.start];
+  S.chats[c.id] = (c.history || []).map(x => x.slice());
+  S.pos[c.id] = { node: sc && sc.start, k: 0 };
+  S.unread[c.id] = c.unread != null ? c.unread : n ? (n.them || []).length : 0;
+}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+
+/* ---------- 아이콘 ---------- */
+const fish = (c, w = 40, plus) => `<svg width="${w}" height="${w * .7}" viewBox="0 0 40 28" fill="${c}"><path d="M3 14C9 4 21 3 28 12L38 6v16l-10-6C21 25 9 24 3 14z"/>${plus ? `<path d="M33 1v8M29 5h8" stroke="${c}" stroke-width="2.4" fill="none"/>` : ""}</svg>`;
+const hook = c => `<svg width="30" height="40" viewBox="0 0 30 40" fill="none" stroke="${c}" stroke-width="4.5" stroke-linecap="round"><path d="M10 4v20a8 8 0 0 0 16 0v-3"/></svg>`;
+const mail = c => `<svg width="44" height="32" viewBox="0 0 44 32"><rect width="44" height="30" rx="5" fill="${c}"/><path d="M4 8l18 12L40 8" stroke="#fff" stroke-width="3" fill="none"/></svg>`;
+const gear = `<svg width="34" height="34" viewBox="0 0 24 24" fill="#fff"><path d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3.2h-4l-.4 2.7a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.600 11a7.500 7.500 0 0 0 0 2l-2.100 1.600 2 3.500 2.500-1c.5.400 1.100.700 1.700 1l.400 2.700h4l.4-2.700c.6-.3 1.200-.6 1.700-1l2.500 1 2-3.500zM13 15.500a3.500 3.500 0 1 1 0-7 3.500 3.500 0 0 1 0 7z"/></svg>`;
+
+/* ---------- 데이터 계산 ---------- */
+const friends = () => [...D.characters, ...D.recommended.filter(r => S.added.includes(r.id)).map(r => ({ ...r, group: r.addAs || "guest", status: r.status || "" }))];
+const lastOf = id => (S.chats[id] || []).slice(-1)[0];
+const chatList = () => friends().filter(c => (S.chats[c.id] || []).length || S.unread[c.id]);
+const previewOf = c => { const n = c.script && c.script.nodes[c.script.start]; return n && n.them ? n.them[0] : ""; };
+const unreadTotal = () => Object.values(S.unread).reduce((a, b) => a + b, 0);
+const recs = () => D.recommended.filter(r => !S.added.includes(r.id));
+
+/* ---------- 화면 ---------- */
+let tab = 0, room = null, timers = [];
+const el = (t, cls, txt) => { const e = document.createElement(t); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const avatar = c => { const a = el("div", "av"); if (c.avatar) a.style.backgroundImage = `url("${c.avatar}")`; else a.innerHTML = fish("#fff", 30); return a; };
+
+function render() {
+  const hd = $("#hd"), nav = $("#nav"), main = $("#main");
+  hd.innerHTML = ""; main.innerHTML = "";
+  if (room) {
+    nav.hidden = true;
+    const b = el("button", "back", "‹"); b.setAttribute("aria-label", "뒤로"); b.onclick = closeRoom;
+    hd.append(b, el("span", "", room.name));
+    const c = el("div"); c.id = "chat"; main.append(c);
+    (S.chats[room.id] || []).forEach(m => c.append(bubble(room, m)));
+    main.scrollTop = main.scrollHeight; showChoices();
+    return;
+  }
+  nav.hidden = false; $("#choices").hidden = true;
+  const titles = [["친구", friends().length], ["대화", chatList().length], ["추천", recs().length], ["쪽지", D.mail.length]];
+  hd.innerHTML = `<span>${titles[tab][0]}<span class="n">${titles[tab][1]}</span></span><span class="sp"></span>`;
+  const g = el("button"); g.innerHTML = gear; g.setAttribute("aria-label", "설정: 진행 초기화"); g.onclick = () => { if (confirm("대화 기록과 친구 추가를 모두 초기화할까요?")) { localStorage.removeItem(KEY); location.reload(); } };
+  hd.append(g);
+  const badges = [0, unreadTotal(), recs().length, S.mail.filter(r => !r).length];
+  const icons = [on => fish(on ? "#4ac9c4" : "#ccc", 50), on => hook(on ? "#4ac9c4" : "#ccc"), on => fish(on ? "#4ac9c4" : "#ccc", 46, 1), on => mail("#ccc")];
+  nav.innerHTML = "";
+  ["친구", "대화", "추천", "쪽지"].forEach((n, i) => {
+    const t = el("button", "tab" + (i === tab ? " on" : "")); t.setAttribute("role", "tab"); t.setAttribute("aria-label", n);
+    t.innerHTML = icons[i](i === tab) + (badges[i] ? `<span class="badge">${badges[i]}</span>` : "");
+    t.onclick = () => { tab = i; render(); }; nav.append(t);
+  });
+  [viewFriends, viewChats, viewRecs, viewMail][tab](main);
+}
+
+function viewFriends(m) {
+  m.append(el("div", "sec", "내 프로필"));
+  const me = el("div", "row"); me.append(avatar(D.me), Object.assign(el("div", "nm mid", D.me.name)), el("div", "st", D.me.status)); m.append(me);
+  const f = friends();
+  [["fav", "즐겨찾기", 12], ["guest", "게스트", 5]].forEach(([k, label, max]) => {
+    const list = f.filter(c => c.group === k);
+    m.append(el("div", "sec", `${label}(${list.length}/${max})`));
+    list.forEach(c => { const r = el("button", "row"); r.append(avatar(c), el("div", "nm mid", c.name), el("div", "st", c.status || "")); r.onclick = () => openRoom(c); m.append(r); });
+  });
+}
+
+function viewChats(m) {
+  const l = chatList();
+  if (!l.length) return m.append(el("div", "empty", "아직 대화가 없어요. 친구를 눌러 말을 걸어보세요."));
+  l.forEach(c => {
+    const r = el("button", "row"), mid = el("div", "mid");
+    mid.append(el("div", "nm", c.name), el("div", "pv", (lastOf(c.id) || ["", previewOf(c)])[1]));
+    r.append(avatar(c), mid); if (S.unread[c.id]) r.append(el("div", "cnt", S.unread[c.id]));
+    r.onclick = () => openRoom(c); m.append(r);
+  });
+}
+
+function viewRecs(m) {
+  m.append(el("div", "sec", "추천친구"));
+  const l = recs(); if (!l.length) return m.append(el("div", "empty", "추천할 친구가 더 없어요."));
+  l.forEach(c => {
+    const r = el("div", "row"), b = el("button", "add"); b.innerHTML = fish("#aaa", 34, 1); b.setAttribute("aria-label", c.name + " 친구 추가");
+    b.onclick = () => { S.added.push(c.id); ensure(c); save(); render(); };
+    r.append(avatar(c), el("div", "nm mid", c.name), b); m.append(r);
+  });
+}
+
+function viewMail(m) {
+  D.mail.forEach((x, i) => {
+    const d = el("div", "mail" + (S.mail[i] ? "" : " un")); d.append(el("b", "", x.from), el("p", "", x.text));
+    d.onclick = () => { d.classList.toggle("open"); if (!S.mail[i]) { S.mail[i] = true; save(); d.classList.remove("un"); } };
+    m.append(d);
+  });
+}
+
+/* ---------- 채팅방 ---------- */
+function bubble(c, [who, text]) {
+  const w = el("div", "m " + who);
+  if (who === "me") { w.append(Object.assign(el("div"), {})); w.firstChild.append(el("div", "bb", text)); return w; }
+  const box = el("div"); box.append(el("div", "who", c.name), el("div", "bb", text)); w.append(avatar(c), box); return w;
+}
+const running = {};
+const nodeOf = c => c.script && c.script.nodes[S.pos[c.id].node];
+const stepsOf = n => [...(n.them || []).map(t => ["them", t]), ...(n.auto ? [["me", n.auto]] : [])];
+function push(c, who, text) {
+  (S.chats[c.id] = S.chats[c.id] || []).push([who, text]);
+  if (who === "them" && !(room && room.id === c.id)) S.unread[c.id] = (S.unread[c.id] || 0) + 1;
+  save();
+  if (room && room.id === c.id) { $("#chat").append(bubble(c, [who, text])); $("#main").scrollTop = $("#main").scrollHeight; }
+}
+function play(c) {
+  const p = S.pos[c.id], n = nodeOf(c);
+  if (!n || running[c.id]) return;
+  const steps = stepsOf(n); running[c.id] = true;
+  (function step() {
+    if (p.k < steps.length) {
+      setTimeout(() => { push(c, steps[p.k][0], steps[p.k][1]); p.k++; save(); step(); }, steps[p.k][0] === "me" ? 900 : 800);
+    } else { running[c.id] = false; if (n.choices) showChoices(); else if (n.next) go(c, n.next); }
+  })();
+}
+function go(c, id) { S.pos[c.id] = { node: id, k: 0 }; save(); play(c); }
+function showChoices() {
+  const box = $("#choices"); box.innerHTML = ""; box.hidden = true;
+  if (!room || running[room.id]) return;
+  const n = nodeOf(room); if (!n || !n.choices || S.pos[room.id].k < stepsOf(n).length) return;
+  const c = room;
+  n.choices.forEach(ch => { const b = el("button", "ch", ch.text); b.onclick = () => { box.hidden = true; push(c, "me", ch.say || ch.text); go(c, ch.next); }; box.append(b); });
+  box.hidden = false; $("#main").scrollTop = $("#main").scrollHeight;
+}
+function openRoom(c) { room = c; S.unread[c.id] = 0; save(); render(); play(c); }
+function closeRoom() { room = null; $("#choices").hidden = true; render(); }
+addEventListener("popstate", () => room && closeRoom());
+render();
+</script>
+</body>
+</html>
