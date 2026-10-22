@@ -19,24 +19,35 @@
      (choices도 next도 없으면 그 대화는 거기서 끝)
    ============================================================ */
 window.GAME_DATA = {
-  version: 2,
+  version: 4,
 
   me: { name: "시윤", avatar: "", status: "♪" },
 
   characters: [
     {
-      id: "doui", name: "도위", avatar: "", group: "fav", status: "언제나",
+      id: "hansegye", name: "한세계", avatar: "", group: "fav", status: "삶에 도파민이 없어",
       script: {
-        start: "s1",
+        start: "intro1",
         nodes: {
-          s1: { them: ["일어났어?"],
-                choices: [{ text: "아침 먹었어요?", next: "eat" }, { text: "뭐해요?", next: "eat2" }] },
-          eat:  { them: ["아침 먹는 중", "주인공은 뭐해?"],
-                  choices: [{ text: "저도 먹으려구요", next: "end" }, { text: "그냥 누워있어요", next: "end" }] },
-          // auto : 플레이어 답장이 자동 입력되는 예시
-          eat2: { them: ["아침 먹는 중", "주인공은 뭐해?"], auto: "저는 그냥 누워있어요", next: "end" },
-          end:  { them: ["그렇구나. 맛있게 먹어"] },
-        },
+          intro1: { them: ["안녕하세요."] , next: "intro2" },
+          intro2: { them: ["?", "누구?"], choices: [
+            { text: "친구 추천 목록에 그쪽이 떠서요. 친구 추가 해봤어요.", next: "intro3" }
+          ] },
+          intro3: { meAuto: true, auto: "친구 추천 목록에 그쪽이 떠서요. 친구 추가 해봤어요.", them: ["어? 그래?", "음~", "아!", "너!", "걔가 조아…", "아", "아니다", "미안미안", "방금은 잊어줘", "이야 나 친구한테 들어서", "너 알고 있거든~", "아싸 새친구다 잘 부탁해~"], choices: [
+            { text: "저도 잘 부탁해요.", next: "day1" }
+          ] },
+          day1: { them: ["{주인공이름} 머해~", "오늘 완전 햇빛 쨍쩅인데~"], choices: [
+            { text: "그러게요", next: "sunny" },
+            { text: "여긴 비오는데", next: "rainy" }
+          ] },
+          sunny: { auto: "날씨 좋다", them: ["세계는 오늘 뭐할거예요?"], next: "shared1" },
+          rainy: { auto: "갑자기 비 엄청 와요.\n그쪽은 햇빛 나오나 보네.\n세계는 오늘 뭐할거예요?", next: "shared1" },
+          shared1: { them: ["나? 나는 오늘 음~", "헐!"], next: "shared2" },
+          shared2: { them: ["완전 아끼는 후배가 있는데", "걔가 지나가서~", "반응이 찰져서", "만난김에 놀려주고 와야지", "기다려라~", "나의 도파민이여~"], choices: [
+            { text: "ㅋㅋ\n너무 괴롭히진 마세요.", next: "shared3" }
+          ] },
+          shared3: { them: ["웅~", "아라떠~"] }
+        }
       },
     },
     {
