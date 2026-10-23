@@ -67,7 +67,7 @@ window.GAME_DATA = {
       history: [["them", "나 말고 죽순"]], unread: 0,
       affinity: { title: "좋아하는 사람" } },
          { id: "doui", name: "성솔", group: "fav", status: "🐼",
-      avatar: "img/doui.png",
+      avatar: "img/panda.png",
       history: [["them", "카페 갈 거지? 미리 주문할게 자기야~"]], unread: 0,
       affinity: { level: 25, color: "#55c4b4", title: "어라…" } },
   ],
