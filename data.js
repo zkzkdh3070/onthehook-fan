@@ -41,7 +41,7 @@ window.GAME_DATA = {
               { id: "panda", name: "성솔", group: "fav", status: "🐼",
       avatar: "img/panda.png",
       history: [["them", "카페 갈 거지? 미리 주문할게 자기야~"]], unread: 0,
-      affinity: { level: 50, color: "#55c4b4", title: "어라…" } },
+      affinity: { level: 30, color: "#55c4b4", title: "어라…" } },
     {
       id: "agi", name: "최신", group: "fav", status: "The Godest & Godess",
       avatar: "img/agi.png",
