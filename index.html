@@ -108,10 +108,13 @@ form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var
   </section>
 </div>
 <div id="splash"><svg width="220" height="154" viewBox="0 0 40 28" fill="#fff"><path d="M3 14C9 4 21 3 28 12L38 6v16l-10-6C21 25 9 24 3 14z"/><circle cx="11" cy="12.2" r="1.5" fill="#4ac9c4"/></svg><div>ON THE HOOK</div></div>
-<script>const T0=Date.now();function hideSplash(){setTimeout(()=>{const s=document.getElementById("splash");if(!s)return;s.classList.add("out");setTimeout(()=>s.remove(),400)},Math.max(0,2000-(Date.now()-T0)))}</script>
+<script>function showErr(m){const e=document.getElementById("main");if(e)e.innerHTML='<div style="padding:20px;color:#d33;font:16px sans-serif;white-space:pre-wrap;word-break:break-all"></div>',e.firstChild.textContent="⚠ 오류가 났어요. 이 글을 캡처해서 보내 주세요.\n\n"+m}
+addEventListener("error",ev=>showErr(ev.message+" ("+String(ev.filename||"").split("/").pop()+":"+ev.lineno+")"));
+const T0=Date.now();function hideSplash(){setTimeout(()=>{const s=document.getElementById("splash");if(!s)return;s.classList.add("out");setTimeout(()=>s.remove(),400)},Math.max(0,2000-(Date.now()-T0)))}</script>
 <script src="data.js"></script>
 <script>
 (async () => {
+if (!window.GAME_DATA) throw new Error("data.js를 읽지 못했어요. 파일 이름·위치 또는 문법 오류(쉼표, 따옴표)를 확인하세요.");
 const D = window.GAME_DATA, KEY = "onhook_v" + D.version;
 const loadErrs = [];
 await Promise.all([...D.characters, ...D.recommended].filter(c => c.scriptFile).map(async c => {
@@ -173,7 +176,7 @@ function ensure(c) {
   S.pos[c.id] = { node: sc && sc.start, k: 0 };
   S.unread[c.id] = c.unread != null ? c.unread : n ? lead(n) : 0;
 }
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 
 /* ---------- 아이콘 ---------- */
 const fish = (c, w = 40, plus) => `<svg width="${w}" height="${w * .7}" viewBox="0 0 40 28" fill="${c}"><path d="M3 14C9 4 21 3 28 12L38 6v16l-10-6C21 25 9 24 3 14z"/>${plus ? `<path d="M33 1v8M29 5h8" stroke="${c}" stroke-width="2.4" fill="none"/>` : ""}</svg>`;
@@ -376,7 +379,7 @@ $("#profileStatus").addEventListener("keydown", e => { if (e.key === "Enter") $(
 addEventListener("keydown", e => { if (e.key === "Escape") { closeFriend(); if (!$("#profileOverlay").hidden) closeProfileEditor(); } });
 addEventListener("popstate", () => room && closeRoom());
 render();
-})().catch(console.error).finally(hideSplash);
+})().catch(e => { console.error(e); showErr(e && e.message || e); }).finally(hideSplash);
 </script>
 </body>
 </html>
