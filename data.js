@@ -20,23 +20,23 @@
      (choices도 next도 없으면 그 대화는 거기서 끝)
    ============================================================ */
 window.GAME_DATA = {
-  version: 5,
+  version: 6,
 
   /* 호감도 기본값 (캐릭터에 affinity가 없을 때) */
   affinityDefault: { level: 25, title: "스레기의 그녀" },
 
-  me: { name: "주인공", avatar: "", status: "♪" avatar: "https://media.discordapp.net/attachments/1557612618896773192/1563105571136208948/onthehook_20261023052237936.png?ex=6adc6b01&is=6adb1981&hm=467a38d2f9d4a783f8b0bb00d91d919d1d50b4a4592cb2b5a6e317d28863d991&=&format=webp&quality=lossless&width=863&height=1024", },
+  me: { name: "주인공", status: "♪", avatar: "img/me.png" },
 
   characters: [
     {
       id: "hansegye", name: "한세계", group: "fav", status: "삶에 도파민이 없어",
-      avatar: "https://media.discordapp.net/attachments/1557612618896773192/1563106327683661935/image.png?ex=6adc6bb5&is=6adb1a35&hm=881b0c0821d6a818ef4393dcc2c8a4a2f59a25ab72d815ab3f4fa69da464c5bf&=&format=webp&quality=lossless",                                // ← 프로필 이미지 링크(https://...) 또는 img/파일명
+      avatar: "img/hansegye.png",
       scriptFile: "scripts/hansegye.txt",        // ← 대화는 이 txt 파일에서 읽어옴
       affinity: { level: 25, title: "스레기의 그녀" },   // 호감도 칸(0~100)과 정보창 문구
     },
     {
-      id: "agi", name: "최신", avatar: "", group: "fav", status: "The Godest & Godess",
-       avatar: "https://cdn.discordapp.com/attachments/1557612618896773192/1563105568682676275/onthehook_20261023052306403.png?ex=6adc6b00&is=6adb1980&hm=8adb401bd36c82e78afb0ac80543a32b1ae3dcffb5b4eb8db5c58780f242ff33&",
+      id: "agi", name: "최신", group: "fav", status: "The Godest & Godess",
+      avatar: "img/agi.png",
       history: [["them", "The Godest & Godess"]],
       script: {
         start: "s1",
@@ -53,17 +53,17 @@ window.GAME_DATA = {
       history: [["me","즐겜"],["them","엉"],["me","뭐하세요?"],["them","겜"],["me","모바일요?"],["them","엉"],["me","머해여"],["them","폰"]],
       unread: 0,
     },
-    { id: "momoi", name: "모모이 하루오", avatar: "", group: "fav", status: "韓国! 4649 ヽ(*°∀°*)ﾉ",
-     avatar: "https://cdn.discordapp.com/attachments/1557612618896773192/1563105569995497532/onthehook_20261023052257063.png?ex=6adc6b00&is=6adb1980&hm=e5c81ef0c7b0d99e015b33ecab5bf61176df93cd7830906899e81f57cdbd012c&",
+    { id: "momoi", name: "모모이 하루오", group: "fav", status: "韓国! 4649 ヽ(*°∀°*)ﾉ",
+      avatar: "img/momoi.png",
       history: [["them", "괜찮습니까?"]], unread: 0 },
-    { id: "sunwoo", name: "선우서래", avatar: "", group: "fav", status: "온톡 안 봐요",
-     avatar: "https://media.discordapp.net/attachments/1557612618896773192/1563105569584447588/onthehook_20261023052300057.png?ex=6adc6b00&is=6adb1980&hm=853884c1a8436f8c3d696c437d20e6ed5e0a9cdd866a04052b79dc5111fe1f55&=&format=webp&quality=lossless&width=863&height=1024",
+    { id: "sunwoo", name: "선우서래", group: "fav", status: "온톡 안 봐요",
+      avatar: "img/sunwoo.png",
       history: [["them", "뭐 하세요?"]], unread: 0 },
-    { id: "sregi", name: "스레기", avatar: "", group: "fav", status: "와 마라탕 존맛탱구",
-     avatar: "https://media.discordapp.net/attachments/1557612618896773192/1563105569160691712/onthehook_20261023052303302.png?ex=6adc6b00&is=6adb1980&hm=ae1f237ea146b7f32a1c95315af80901ea7d1a109e912d908aa1592e721ff2a8&=&format=webp&quality=lossless&width=863&height=1024",
+    { id: "sregi", name: "스레기", group: "fav", status: "와 마라탕 존맛탱구",
+      avatar: "img/sregi.png",
       history: [["them", "아 싫어 내 거니까 그럼 이만 생일축하해 뿅"]], unread: 0 },
-         { id: "sregi", name: "도위", avatar: "", group: "fav", status: "언제나",
-          avatar: "https://media.discordapp.net/attachments/1557612618896773192/1563105570347548753/onthehook_20261023052254106.png?ex=6adc6b01&is=6adb1981&hm=275024d99d1d791755cd5440f318173f2993737ee6bac7b643adef057e1125f7&=&format=webp&quality=lossless&width=863&height=1024",
+    { id: "doui", name: "도위", group: "fav", status: "언제나",
+      avatar: "img/doui.png",
       history: [["them", "나 말고 죽순"]], unread: 0 },
   ],
 
