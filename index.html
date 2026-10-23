@@ -39,7 +39,9 @@ main{flex:1;overflow-y:auto;overscroll-behavior:contain}
 .mail b{font-weight:400;font-size:19px}.mail.un b::after{content:" ●";color:var(--red);font-size:12px}
 .mail p{color:var(--sub);margin-top:6px;display:none;font-size:16px}.mail.open p{display:block}
 #chat{padding:12px 14px 20px}
-.m{display:flex;gap:10px;margin:14px 0;align-items:flex-start}
+.m{display:flex;gap:10px;padding-top:14px;align-items:flex-start}
+.m.cont{padding-top:6px}
+.m.cont .bb,.m.me.cont .bb{border-radius:16px}
 .m.me{justify-content:flex-end}
 .m .av{width:46px;height:46px}
 .m .who{font-size:15px;margin-bottom:3px}
@@ -51,6 +53,28 @@ form input{flex:1;min-width:0;height:48px;border:3px solid var(--line);border-ra
 form input:focus{outline:2px solid var(--teal);border-color:transparent}
 form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var(--teal);color:#fff;font:inherit;font-size:19px;cursor:pointer}
 #choices{display:flex;flex-direction:column;gap:8px;padding:10px 12px calc(12px + env(safe-area-inset-bottom));flex:none;border-top:2px solid var(--line)}#choices[hidden]{display:none}.ch{border:3px solid var(--teal);background:transparent;color:var(--txt);border-radius:12px;padding:12px 16px;font:inherit;font-size:19px;cursor:pointer;text-align:left}.ch:hover,.ch:focus-visible{background:var(--teal);color:#fff;outline:0}
+
+.profile-overlay{position:fixed;inset:0;background:#0006;display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}
+.profile-overlay[hidden]{display:none}
+.profile-modal{position:relative;background:#fff;color:#222;width:100%;max-width:360px;border-radius:34px;padding:28px 24px 24px;text-align:center;box-shadow:0 8px 32px #0002}
+.profile-close{position:absolute;right:18px;top:12px;border:0;background:none;color:#777;font-size:34px;cursor:pointer}
+.profile-avatar{width:100px;height:100px;border-radius:50%;margin:18px auto 22px;background:#d8f7f5;display:flex;align-items:center;justify-content:center}
+.profile-modal label{display:block;text-align:left;color:#777;font-size:13px;margin:12px 4px 5px}
+.profile-modal input{width:100%;height:44px;border:2px solid #e5e5e5;border-radius:8px;padding:0 12px;font:inherit;font-size:17px;color:#222;background:#fff}
+.profile-actions{display:flex;gap:10px;margin-top:22px}
+.profile-actions button{flex:1;border:0;border-radius:9px;padding:12px 8px;font:inherit;font-size:16px;cursor:pointer}
+.profile-cancel{background:#eee;color:#555}.profile-save{background:var(--teal);color:#fff}
+
+#splash{position:fixed;inset:0;background:#4ac9c4;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;color:#fff;font:400 28px "Noto Sans KR","Malgun Gothic",sans-serif;transition:opacity .4s}#splash.out{opacity:0}
+.fr .av.big{width:112px;height:112px;margin:24px auto 18px}
+.fr h2{font-size:24px;font-weight:400;margin:0 0 6px}
+.fr .fst{color:#888;min-height:44px;font-size:16px}
+.fr hr{border:0;border-top:2px solid #e5e5e5;margin:14px 0 18px}
+.fr .acts{display:flex;gap:10px}
+.fr .acts button{flex:1;height:68px;border:2px solid #e5e5e5;border-radius:8px;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.fr .acts button:focus-visible{outline:3px solid var(--teal)}
+.fr .gauge{margin:30px auto 0;display:block}
+.fr .ttl{font-size:21px;margin:26px 0 8px}
 @media (prefers-reduced-motion:no-preference){.m{animation:pop .18s ease-out}@keyframes pop{from{opacity:0;transform:translateY(6px)}}}
 </style>
 </head>
@@ -60,23 +84,83 @@ form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var
   <nav id="nav" role="tablist"></nav>
   <main id="main"></main>
   <div id="choices" hidden></div>
+  <div id="profileOverlay" class="profile-overlay" hidden>
+    <section class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <button id="profileClose" class="profile-close" aria-label="닫기">×</button>
+      <div class="profile-avatar" id="profileAvatar"></div>
+      <h2 id="profileTitle" style="font-size:23px;font-weight:500">내 프로필</h2>
+      <label for="profileName">이름</label>
+      <input id="profileName" maxlength="30" autocomplete="off">
+      <label for="profileStatus">상태 메시지</label>
+      <input id="profileStatus" maxlength="80" autocomplete="off" placeholder="상태 메시지를 입력하세요">
+      <div class="profile-actions">
+        <button id="profileCancel" class="profile-cancel">취소</button>
+        <button id="profileSave" class="profile-save">저장</button>
+      </div>
+    </section>
+  </div>
 </div>
+<div id="friendOverlay" class="profile-overlay" hidden>
+  <section class="profile-modal fr" role="dialog" aria-modal="true" aria-label="친구 프로필">
+    <button id="frClose" class="profile-close" aria-label="닫기">×</button>
+    <div id="frBody"></div>
+  </section>
+</div>
+<div id="splash"><svg width="220" height="154" viewBox="0 0 40 28" fill="#fff"><path d="M3 14C9 4 21 3 28 12L38 6v16l-10-6C21 25 9 24 3 14z"/><circle cx="11" cy="12.2" r="1.5" fill="#4ac9c4"/></svg><div>ON THE HOOK</div></div>
+<script>const T0=Date.now();function hideSplash(){setTimeout(()=>{const s=document.getElementById("splash");if(!s)return;s.classList.add("out");setTimeout(()=>s.remove(),400)},Math.max(0,2000-(Date.now()-T0)))}</script>
 <script src="data.js"></script>
 <script>
+(async () => {
 const D = window.GAME_DATA, KEY = "onhook_v" + D.version;
+await Promise.all([...D.characters, ...D.recommended].filter(c => c.scriptFile).map(async c => {
+  try { const r = await fetch(c.scriptFile, { cache: "no-cache" }); if (!r.ok) throw new Error(r.status); c.script = parseScript(await r.text()); }
+  catch (e) { console.warn("스크립트 로드 실패:", c.scriptFile, e); }
+}));
 const $ = s => document.querySelector(s);
 const all = [...D.characters, ...D.recommended];
 const byId = id => all.find(c => c.id === id);
 
+/* ---------- TXT 스크립트 해석 ---------- */
+function parseScript(txt) {
+  const nodes = {}, top = []; let cur = null, curId = null, topId = null, owner = null, mode = null, start = null;
+  const open = (id, isTop) => { cur = nodes[id] = { lines: [] }; curId = id; mode = null; if (isTop) { top.push(id); topId = id; start = start || id; } cur.top = topId; };
+  for (const raw of txt.replace(/\r/g, "").split("\n")) {
+    const l = raw.trim(); if (!l || l[0] === "#") continue;
+    let m, x;
+    if ((m = l.match(/^\[(.+)\]$/))) {
+      const t = m[1].trim();
+      if ((x = t.match(/^장면\s*[:：]?\s*(.+)$/))) open(x[1].trim(), true);
+      else if (!cur) continue;
+      else if (t === "선택지") { cur.choices = cur.choices || []; owner = curId; mode = "choice"; }
+      else if ((x = t.match(/^(\d+)\s*번\s*선택$/))) open(owner + "_" + x[1], false);
+      else if ((x = t.match(/^이동\s*[:：]?\s*(.+)$/))) cur.next = x[1].trim();
+      else if (t === "끝") cur.end = true;
+      continue;
+    }
+    if (!cur) open("start", true);
+    if (mode === "choice" && (m = l.match(/^(\d+)\s*[.)]\s*(.+)$/))) { nodes[owner].choices.push({ text: m[2], next: owner + "_" + m[1] }); continue; }
+    if ((m = l.match(/^([^:：]{1,20})[:：]\s*(.*)$/))) cur.lines.push([/^(주인공|나|me)$/i.test(m[1].trim()) ? "me" : "them", m[2]]);
+    else if (cur.lines.length) cur.lines.push([cur.lines[cur.lines.length - 1][0], l]);
+  }
+  for (const id in nodes) {
+    const n = nodes[id];
+    if (n.choices && !n.choices.length) delete n.choices;
+    if (!n.choices && !n.next && !n.end) { const nx = top[top.indexOf(n.top) + 1]; if (nx) n.next = nx; }
+    (n.choices || []).forEach(c => { const b = nodes[c.next]; if (b && b.lines[0] && b.lines[0][0] === "me") c.silent = true; });
+  }
+  return { start, nodes };
+}
+
 /* ---------- 저장 상태 ---------- */
 let S = null;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
-if (!S) { S = { added: [], chats: {}, unread: {}, pos: {}, mail: D.mail.map(m => !!m.read) }; D.characters.forEach(ensure); }
+if (!S) { S = { added: [], chats: {}, unread: {}, pos: {}, mail: D.mail.map(m => !!m.read), me: { ...D.me } }; D.characters.forEach(ensure); }
+if (!S.me) S.me = { ...D.me };
 function ensure(c) {
   const sc = c.script, n = sc && sc.nodes[sc.start];
   S.chats[c.id] = (c.history || []).map(x => x.slice());
   S.pos[c.id] = { node: sc && sc.start, k: 0 };
-  S.unread[c.id] = c.unread != null ? c.unread : n ? (n.them || []).length : 0;
+  S.unread[c.id] = c.unread != null ? c.unread : n ? lead(n) : 0;
 }
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 
@@ -90,7 +174,7 @@ const gear = `<svg width="34" height="34" viewBox="0 0 24 24" fill="#fff"><path 
 const friends = () => [...D.characters, ...D.recommended.filter(r => S.added.includes(r.id)).map(r => ({ ...r, group: r.addAs || "guest", status: r.status || "" }))];
 const lastOf = id => (S.chats[id] || []).slice(-1)[0];
 const chatList = () => friends().filter(c => (S.chats[c.id] || []).length || S.unread[c.id]);
-const previewOf = c => { const n = c.script && c.script.nodes[c.script.start]; return n && n.them ? n.them[0] : ""; };
+const previewOf = c => { const n = c.script && c.script.nodes[c.script.start]; const s = n && stepsOf(n)[0]; return s ? s[1] : ""; };
 const unreadTotal = () => Object.values(S.unread).reduce((a, b) => a + b, 0);
 const recs = () => D.recommended.filter(r => !S.added.includes(r.id));
 
@@ -103,11 +187,25 @@ function render() {
   const hd = $("#hd"), nav = $("#nav"), main = $("#main");
   hd.innerHTML = ""; main.innerHTML = "";
   if (room) {
-    nav.hidden = true;
+    nav.hidden = false;
     const b = el("button", "back", "‹"); b.setAttribute("aria-label", "뒤로"); b.onclick = closeRoom;
     hd.append(b, el("span", "", room.name));
+    const roomTabs = ["친구", "대화", "추천", "쪽지"];
+    nav.innerHTML = "";
+    roomTabs.forEach((name, i) => {
+      const t = el("button", "tab" + (i === tab ? " on" : ""));
+      t.setAttribute("role", "tab"); t.setAttribute("aria-label", name);
+      t.innerHTML = ([
+        on => fish(on ? "#4ac9c4" : "#ccc", 50),
+        on => hook(on ? "#4ac9c4" : "#ccc"),
+        on => fish(on ? "#4ac9c4" : "#ccc", 46, 1),
+        on => mail("#ccc")
+      ][i])(i === tab);
+      t.onclick = () => { room = null; tab = i; $("#choices").hidden = true; render(); };
+      nav.append(t);
+    });
     const c = el("div"); c.id = "chat"; main.append(c);
-    (S.chats[room.id] || []).forEach(m => c.append(bubble(room, m)));
+    (S.chats[room.id] || []).forEach((m, i, arr) => c.append(bubble(room, m, arr[i - 1])));
     main.scrollTop = main.scrollHeight; showChoices();
     return;
   }
@@ -129,12 +227,14 @@ function render() {
 
 function viewFriends(m) {
   m.append(el("div", "sec", "내 프로필"));
-  const me = el("div", "row"); me.append(avatar(D.me), Object.assign(el("div", "nm mid", D.me.name)), el("div", "st", D.me.status)); m.append(me);
+  const me = el("button", "row"); me.type = "button"; me.setAttribute("aria-label", "내 프로필 수정");
+  me.append(avatar(S.me), el("div", "nm mid", S.me.name || "시윤"), el("div", "st", S.me.status || ""));
+  me.onclick = openProfileEditor; m.append(me);
   const f = friends();
   [["fav", "즐겨찾기", 12], ["guest", "게스트", 5]].forEach(([k, label, max]) => {
     const list = f.filter(c => c.group === k);
     m.append(el("div", "sec", `${label}(${list.length}/${max})`));
-    list.forEach(c => { const r = el("button", "row"); r.append(avatar(c), el("div", "nm mid", c.name), el("div", "st", c.status || "")); r.onclick = () => openRoom(c); m.append(r); });
+    list.forEach(c => { const r = el("button", "row"); r.append(avatar(c), el("div", "nm mid", c.name), el("div", "st", c.status || "")); r.onclick = () => openFriend(c); m.append(r); });
   });
 }
 
@@ -143,7 +243,7 @@ function viewChats(m) {
   if (!l.length) return m.append(el("div", "empty", "아직 대화가 없어요. 친구를 눌러 말을 걸어보세요."));
   l.forEach(c => {
     const r = el("button", "row"), mid = el("div", "mid");
-    mid.append(el("div", "nm", c.name), el("div", "pv", (lastOf(c.id) || ["", previewOf(c)])[1]));
+    mid.append(el("div", "nm", c.name), el("div", "pv", displayText((lastOf(c.id) || ["", previewOf(c)])[1])));
     r.append(avatar(c), mid); if (S.unread[c.id]) r.append(el("div", "cnt", S.unread[c.id]));
     r.onclick = () => openRoom(c); m.append(r);
   });
@@ -168,19 +268,28 @@ function viewMail(m) {
 }
 
 /* ---------- 채팅방 ---------- */
-function bubble(c, [who, text]) {
-  const w = el("div", "m " + who);
-  if (who === "me") { w.append(Object.assign(el("div"), {})); w.firstChild.append(el("div", "bb", text)); return w; }
-  const box = el("div"); box.append(el("div", "who", c.name), el("div", "bb", text)); w.append(avatar(c), box); return w;
+function displayText(text) {
+  const currentName = (S.me && S.me.name || D.me.name || "주인공").trim();
+  return String(text).replace(/\{주인공이름\}/g, currentName);
+}
+function bubble(c, [who, text], prev) {
+  const cont = !!prev && prev[0] === who, t = displayText(text);
+  const w = el("div", "m " + who + (cont ? " cont" : ""));
+  if (who === "me") { const b = el("div"); b.append(el("div", "bb", t)); w.append(b); return w; }
+  const box = el("div"); if (!cont) box.append(el("div", "who", c.name)); box.append(el("div", "bb", t));
+  if (cont) { const sp = el("div", "av"); sp.style.visibility = "hidden"; w.append(sp); } else w.append(avatar(c));
+  w.append(box); return w;
 }
 const running = {};
 const nodeOf = c => c.script && c.script.nodes[S.pos[c.id].node];
-const stepsOf = n => [...(n.them || []).map(t => ["them", t]), ...(n.auto ? [["me", n.auto]] : [])];
+function stepsOf(n) { return n.lines || [...(n.them || []).map(t => ["them", t]), ...(n.auto ? [["me", n.auto]] : [])]; }
+function lead(n) { let k = 0; for (const s of stepsOf(n)) { if (s[0] !== "them") break; k++; } return k; }
 function push(c, who, text) {
+  const prev = (S.chats[c.id] || []).slice(-1)[0];
   (S.chats[c.id] = S.chats[c.id] || []).push([who, text]);
   if (who === "them" && !(room && room.id === c.id)) S.unread[c.id] = (S.unread[c.id] || 0) + 1;
   save();
-  if (room && room.id === c.id) { $("#chat").append(bubble(c, [who, text])); $("#main").scrollTop = $("#main").scrollHeight; }
+  if (room && room.id === c.id) { $("#chat").append(bubble(c, [who, text], prev)); $("#main").scrollTop = $("#main").scrollHeight; }
 }
 function play(c) {
   const p = S.pos[c.id], n = nodeOf(c);
@@ -198,13 +307,63 @@ function showChoices() {
   if (!room || running[room.id]) return;
   const n = nodeOf(room); if (!n || !n.choices || S.pos[room.id].k < stepsOf(n).length) return;
   const c = room;
-  n.choices.forEach(ch => { const b = el("button", "ch", ch.text); b.onclick = () => { box.hidden = true; push(c, "me", ch.say || ch.text); go(c, ch.next); }; box.append(b); });
+  n.choices.forEach(ch => { const b = el("button", "ch", ch.text); b.onclick = () => { box.hidden = true; if (!ch.silent) push(c, "me", ch.say || ch.text); go(c, ch.next); }; box.append(b); });
   box.hidden = false; $("#main").scrollTop = $("#main").scrollHeight;
 }
-function openRoom(c) { room = c; S.unread[c.id] = 0; save(); render(); play(c); }
+function openRoom(c) {
+  if (c.id !== "hansegye") {
+    alert("이 팬게임에서 공략할 수 있는 캐릭터는 한세계뿐이에요.");
+    return;
+  }
+  room = c; S.unread[c.id] = 0; save(); render(); play(c);
+}
 function closeRoom() { room = null; $("#choices").hidden = true; render(); }
+
+function openFriend(c, info) {
+  const b = $("#frBody"); b.innerHTML = "";
+  if (info) {
+    const a = Object.assign({ level: 25, title: "스레기의 그녀" }, D.affinityDefault, c.affinity), y = 24 - 20 * Math.max(0, Math.min(100, a.level)) / 100;
+    const P = "M3 14C9 4 21 3 28 12L38 6v16l-10-6C21 25 9 24 3 14z";
+    b.innerHTML = `<svg class="gauge" width="300" height="190" viewBox="1 2 38 24" role="img" aria-label="호감도"><defs><clipPath id="fc"><rect x="0" y="${y}" width="40" height="28"/></clipPath></defs><path d="${P}" fill="#ccc"/><path d="${P}" fill="#55c4b4" clip-path="url(#fc)"/><circle cx="11" cy="12.2" r="1.3" fill="#fff"/></svg><hr style="margin-top:34px"><div class="ttl"></div>`;
+    b.querySelector(".ttl").textContent = "[" + a.title + "]";
+  } else {
+    const a = avatar(c); a.classList.add("big"); if (!c.avatar) a.innerHTML = fish("#fff", 60);
+    const btn = (label, svg, fn) => { const x = el("button"); x.type = "button"; x.setAttribute("aria-label", label); x.innerHTML = svg; x.onclick = fn; return x; };
+    const acts = el("div", "acts");
+    acts.append(
+      btn("대화하기", '<svg width="64" height="52" viewBox="0 0 64 52"><path d="M6 4h52a4 4 0 0 1 4 4v26a4 4 0 0 1-4 4H34L24 48V38H6a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z" fill="#4ac9c4"/><g fill="#fff"><circle cx="20" cy="21" r="3.5"/><circle cx="32" cy="21" r="3.5"/><circle cx="44" cy="21" r="3.5"/></g></svg>', () => { closeFriend(); openRoom(c); }),
+      btn("정보", '<svg width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="#4ac9c4"/><rect x="23" y="22" width="6" height="18" rx="2" fill="#fff"/><circle cx="26" cy="14.500" r="3.500" fill="#fff"/></svg>', () => openFriend(c, true)),
+      btn("차단", '<svg width="52" height="52" viewBox="0 0 52 52" fill="none" stroke="#bbb" stroke-width="4.500"><circle cx="26" cy="26" r="22"/><path d="M10 42L42 10"/></svg>', () => alert("차단 기능은 준비 중이에요."))
+    );
+    b.append(a, el("h2", "", c.name), el("div", "fst", c.status || ""), document.createElement("hr"), acts);
+  }
+  $("#friendOverlay").hidden = false;
+}
+function closeFriend() { $("#friendOverlay").hidden = true; }
+$("#frClose").onclick = closeFriend;
+$("#friendOverlay").addEventListener("click", e => { if (e.target.id === "friendOverlay") closeFriend(); });
+
+function openProfileEditor() {
+  $("#profileName").value = S.me.name || "";
+  $("#profileStatus").value = S.me.status || "";
+  $("#profileOverlay").hidden = false;
+  $("#profileName").focus();
+}
+function closeProfileEditor() { $("#profileOverlay").hidden = true; }
+$("#profileClose").onclick = closeProfileEditor;
+$("#profileCancel").onclick = closeProfileEditor;
+$("#profileOverlay").addEventListener("click", e => { if (e.target.id === "profileOverlay") closeProfileEditor(); });
+$("#profileSave").onclick = () => {
+  const name = $("#profileName").value.trim();
+  if (!name) { alert("이름을 입력해 주세요."); $("#profileName").focus(); return; }
+  S.me = { ...S.me, name, status: $("#profileStatus").value.trim() };
+  save(); closeProfileEditor(); render();
+};
+$("#profileStatus").addEventListener("keydown", e => { if (e.key === "Enter") $("#profileSave").click(); });
+addEventListener("keydown", e => { if (e.key === "Escape") { closeFriend(); if (!$("#profileOverlay").hidden) closeProfileEditor(); } });
 addEventListener("popstate", () => room && closeRoom());
 render();
+})().catch(console.error).finally(hideSplash);
 </script>
 </body>
 </html>
