@@ -37,17 +37,7 @@ window.GAME_DATA = {
     {
       id: "agi", name: "최신", group: "fav", status: "The Godest & Godess",
       avatar: "img/agi.png",
-      history: [["them", "마녀, 육체는 건강하게 보존하고 있는가?],
-      script: {
-        start: "s1",
-        nodes: {
-          s1: { them: ["마녀, 육체는 건강하게 보존하고 있는가?"],
-                choices: [{ text: "하늘 보고 있어요", next: "a" }, { text: "미세먼지 심한데요?", next: "b" }] },
-          a: { them: ["후후, 역시 통하는군"] },
-          b: { them: ["...그것은 하늘의 시련일 뿐"] },
-        },
-      },
-    },
+      history: [["them", "마녀, 육체는 건강하게 보존하고 있는가?]],  unread: 0},
     {
       id: "unknown", name: ",", avatar: "", group: "fav", status: "", avatar: "img/com.png",
       history: [["me","즐겜"],["them","엉"],["me","뭐하세요?"],["them","겜"],["me","모바일요?"],["them","엉"],["me","머해여"],["them","폰"]],
