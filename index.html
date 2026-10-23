@@ -311,10 +311,15 @@ function play(c) {
   const p = S.pos[c.id], n = nodeOf(c);
   if (!n || running[c.id]) return;
   const steps = stepsOf(n); running[c.id] = true;
+  const WAIT = D.dividerWait != null ? D.dividerWait : 5000;   /* 구분선 뒤 대기(ms) */
+  const finish = () => { running[c.id] = false; if (n.choices) showChoices(); else if (n.next) go(c, n.next); };
   (function step() {
+    const prev = steps[p.k - 1];
     if (p.k < steps.length) {
-      setTimeout(() => { push(c, steps[p.k][0], steps[p.k][1]); p.k++; save(); step(); }, steps[p.k][0] === "me" ? 900 : steps[p.k][0] === "line" ? 400 : 800);
-    } else { running[c.id] = false; if (n.choices) showChoices(); else if (n.next) go(c, n.next); }
+      const cur = steps[p.k], d = prev && prev[0] === "line" ? WAIT : cur[0] === "me" ? 900 : cur[0] === "line" ? 400 : 800;
+      setTimeout(() => { push(c, cur[0], cur[1]); p.k++; save(); step(); }, d);
+    } else if (prev && prev[0] === "line") setTimeout(finish, WAIT);
+    else finish();
   })();
 }
 function go(c, id) { S.pos[c.id] = { node: id, k: 0 }; save(); play(c); }

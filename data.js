@@ -20,7 +20,10 @@
      (choices도 next도 없으면 그 대화는 거기서 끝)
    ============================================================ */
 window.GAME_DATA = {
-  version: 6,
+  version: 7,
+
+  /* 구분선이 나온 뒤 다음 대사까지 기다리는 시간 (1000 = 1초) */
+  dividerWait: 5000,
 
   /* 호감도 기본값 (캐릭터에 affinity가 없을 때) */
   affinityDefault: { level: 25, title: "스레기의 그녀" },
@@ -37,9 +40,10 @@ window.GAME_DATA = {
     {
       id: "agi", name: "최신", group: "fav", status: "The Godest & Godess",
       avatar: "img/agi.png",
-      history: [["them", "마녀, 육체는 건강하게 보존하고 있는가?"]],  unread: 0 },
+      history: [["them", "마녀, 육체는 건강하게 보존하고 있는가?"]], unread: 0,
+    },
     {
-      id: "unknown", name: ",", avatar: "", group: "fav", status: "", avatar: "img/com.png",
+      id: "unknown", name: ",", avatar: "img/com.png", group: "fav", status: "",
       history: [["me","즐겜"],["them","엉"],["me","뭐하세요?"],["them","겜"],["me","모바일요?"],["them","엉"],["me","머해여"],["them","폰"]],
       unread: 0,
     },
