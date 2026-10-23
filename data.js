@@ -25,7 +25,7 @@ window.GAME_DATA = {
   /* 호감도 기본값 (캐릭터에 affinity가 없을 때) */
   affinityDefault: { level: 25, title: "스레기의 그녀" },
 
-  me: { name: "시윤", avatar: "", status: "♪" },
+  me: { name: "주인공", avatar: "", status: "♪" },
 
   characters: [
     {
@@ -35,12 +35,12 @@ window.GAME_DATA = {
       affinity: { level: 25, title: "스레기의 그녀" },   // 호감도 칸(0~100)과 정보창 문구
     },
     {
-      id: "agi", name: "아기 신이♡", avatar: "", group: "fav", status: "The Godest & Godess",
-      history: [["them", "오늘은 하늘을 더럽히는 공기의 흐름이.."]],
+      id: "agi", name: "최신", avatar: "", group: "fav", status: "The Godest & Godess",
+      history: [["them", "The Godest & Godess"]],
       script: {
         start: "s1",
         nodes: {
-          s1: { them: ["오늘도 하늘이 아름답군", "그대는 무엇을 하고 있나"],
+          s1: { them: ["마녀, 육체는 건강하게 보존하고 있는가?"],
                 choices: [{ text: "하늘 보고 있어요", next: "a" }, { text: "미세먼지 심한데요?", next: "b" }] },
           a: { them: ["후후, 역시 통하는군"] },
           b: { them: ["...그것은 하늘의 시련일 뿐"] },
@@ -57,7 +57,9 @@ window.GAME_DATA = {
     { id: "sunwoo", name: "선우서래", avatar: "", group: "fav", status: "온톡 안 봐요",
       history: [["them", "뭐 하세요?"]], unread: 0 },
     { id: "sregi", name: "스레기", avatar: "", group: "fav", status: "와 마라탕 존맛탱구",
-      history: [["them", "이번에 수학 잘 봤다.."]], unread: 0 },
+      history: [["them", "아 싫어 내 거니까 그럼 이만 생일축하해 뿅"]], unread: 0 },
+         { id: "sregi", name: "도위", avatar: "", group: "fav", status: "언제나",
+      history: [["them", "나 말고 죽순"]], unread: 0 },
   ],
 
   /* 추천 친구 탭. 추가(+)하면 친구 목록 addAs 그룹에 들어가고, script가 있으면 먼저 말을 겁니다 */
