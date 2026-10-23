@@ -37,7 +37,7 @@ window.GAME_DATA = {
     {
       id: "agi", name: "최신", group: "fav", status: "The Godest & Godess",
       avatar: "img/agi.png",
-      history: [["them", "마녀, 육체는 건강하게 보존하고 있는가?]],  unread: 0 },
+      history: [["them", "마녀, 육체는 건강하게 보존하고 있는가?"]],  unread: 0 },
     {
       id: "unknown", name: ",", avatar: "", group: "fav", status: "", avatar: "img/com.png",
       history: [["me","즐겜"],["them","엉"],["me","뭐하세요?"],["them","겜"],["me","모바일요?"],["them","엉"],["me","머해여"],["them","폰"]],
