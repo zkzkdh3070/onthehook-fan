@@ -1,5 +1,5 @@
 /* ============================================================
-   온더훅 팬게임
+   온더훅 팬게임 - 데이터 파일 (여기만 고치면 됩니다)
    ------------------------------------------------------------
    version : 내용을 크게 바꾸면 숫자를 올리세요 (저장된 진행이 초기화되고 새 내용 적용)
    avatar  : 프로필 이미지. 링크("https://...") 또는 저장소 경로("img/doui.png"). 비우면 물고기 아이콘
@@ -25,8 +25,9 @@ window.GAME_DATA = {
   /* 구분선이 나온 뒤 다음 대사까지 기다리는 시간 (1000 = 1초) */
   dividerWait: 5000,
 
-  /* 호감도 기본값 (캐릭터에 affinity가 없을 때) */
-  affinityDefault: { level: 25, title: "스레기의 그녀" },
+  /* 호감도 창 기본값. 캐릭터의 affinity에 적은 항목이 우선합니다.
+     level: 채움 0~100 / color: 채움 색 / dot: 꼬리 위 회색 점 / title: [대괄호] 문구 / desc: 아래 설명(줄바꿈은 \n) */
+  affinityDefault: { level: 100, color: "#ef9090", dot: true, title: "좋아하는 사람" },
 
   me: { name: "주인공", status: "♪", avatar: "img/me.png" },
 
@@ -35,30 +36,36 @@ window.GAME_DATA = {
       id: "hansegye", name: "한세계", group: "fav", status: "삶에 도파민이 없어",
       avatar: "img/hansegye.png",
       scriptFile: "scripts/hansegye.txt",        // ← 대화는 이 txt 파일에서 읽어옴
-      affinity: { level: 25, title: "스레기의 그녀" },   // 호감도 칸(0~100)과 정보창 문구
+      affinity: { level: 25, color: "#55c4b4", dot: false, title: "스레기의 그녀" },
     },
     {
       id: "agi", name: "최신", group: "fav", status: "The Godest & Godess",
       avatar: "img/agi.png",
       history: [["them", "마녀, 육체는 건강하게 보존하고 있는가?"]], unread: 0,
+      affinity: { title: "좋아하는 사람" },
     },
     {
       id: "unknown", name: ",", avatar: "img/com.png", group: "fav", status: "",
       history: [["me","즐겜"],["them","엉"],["me","뭐하세요?"],["them","겜"],["me","모바일요?"],["them","엉"],["me","머해여"],["them","폰"]],
       unread: 0,
+      affinity: { title: "좋아하는 사람" },
     },
     { id: "momoi", name: "모모이 하루오", group: "fav", status: "韓国! 4649 ヽ(*°∀°*)ﾉ",
       avatar: "img/momoi.png",
-      history: [["them", "괜찮습니까?"]], unread: 0 },
+      history: [["them", "괜찮습니까?"]], unread: 0,
+      affinity: { title: "좋아하는 사람" } },
     { id: "sunwoo", name: "선우서래", group: "fav", status: "온톡 안 봐요",
       avatar: "img/sunwoo.png",
-      history: [["them", "뭐 하세요?"]], unread: 0 },
+      history: [["them", "뭐 하세요?"]], unread: 0,
+      affinity: { title: "좋아하는 사람" } },
     { id: "sregi", name: "스레기", group: "fav", status: "와 마라탕 존맛탱구",
       avatar: "img/sregi.png",
-      history: [["them", "아 싫어 내 거니까 그럼 이만 생일축하해 뿅"]], unread: 0 },
+      history: [["them", "아 싫어 내 거니까 그럼 이만 생일축하해 뿅"]], unread: 0,
+      affinity: { title: "좋아하는 사람" } },
     { id: "doui", name: "도위", group: "fav", status: "언제나",
       avatar: "img/doui.png",
-      history: [["them", "나 말고 죽순"]], unread: 0 },
+      history: [["them", "나 말고 죽순"]], unread: 0,
+      affinity: { title: "좋아하는 사람" } },
   ],
 
   /* 추천 친구 탭. 추가(+)하면 친구 목록 addAs 그룹에 들어가고, script가 있으면 먼저 말을 겁니다 */
