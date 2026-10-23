@@ -38,6 +38,10 @@ window.GAME_DATA = {
       scriptFile: "scripts/hansegye.txt",        // ← 대화는 이 txt 파일에서 읽어옴
       affinity: { level: 25, color: "#55c4b4", dot: false, title: "스레기의 그녀" },
     },
+              { id: "panda", name: "성솔", group: "fav", status: "🐼",
+      avatar: "img/panda.png",
+      history: [["them", "카페 갈 거지? 미리 주문할게 자기야~"]], unread: 0,
+      affinity: { level: 50, color: "#55c4b4", title: "어라…" } },
     {
       id: "agi", name: "최신", group: "fav", status: "The Godest & Godess",
       avatar: "img/agi.png",
@@ -66,10 +70,6 @@ window.GAME_DATA = {
       avatar: "img/doui.png",
       history: [["them", "나 말고 죽순"]], unread: 0,
       affinity: { title: "좋아하는 사람" } },
-         { id: "doui", name: "성솔", group: "fav", status: "🐼",
-      avatar: "img/panda.png",
-      history: [["them", "카페 갈 거지? 미리 주문할게 자기야~"]], unread: 0,
-      affinity: { level: 25, color: "#55c4b4", title: "어라…" } },
   ],
 
   /* 추천 친구 탭. 추가(+)하면 친구 목록 addAs 그룹에 들어가고, script가 있으면 먼저 말을 겁니다 */
