@@ -75,6 +75,7 @@ form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var
 .fr .acts button:focus-visible{outline:3px solid var(--teal)}
 .profile-modal.fr{min-height:470px}.fr .gauge{margin:96px auto 0;display:block}
 .fr .ttl{font-size:21px;margin:26px 0 8px}
+.dv{border-top:2px solid var(--line);margin:22px 0 4px;text-align:center}.dv span{display:block;padding-top:6px;color:var(--sub);font-size:14px}
 @media (prefers-reduced-motion:no-preference){.m{animation:pop .18s ease-out}@keyframes pop{from{opacity:0;transform:translateY(6px)}}}
 </style>
 </head>
@@ -112,9 +113,10 @@ form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var
 <script>
 (async () => {
 const D = window.GAME_DATA, KEY = "onhook_v" + D.version;
+const loadErrs = [];
 await Promise.all([...D.characters, ...D.recommended].filter(c => c.scriptFile).map(async c => {
   try { const r = await fetch(c.scriptFile, { cache: "no-cache" }); if (!r.ok) throw new Error(r.status); c.script = parseScript(await r.text()); }
-  catch (e) { console.warn("스크립트 로드 실패:", c.scriptFile, e); }
+  catch (e) { loadErrs.push(c.scriptFile); console.warn("스크립트 로드 실패:", c.scriptFile, e); }
 }));
 const $ = s => document.querySelector(s);
 const all = [...D.characters, ...D.recommended];
@@ -135,6 +137,7 @@ function parseScript(txt) {
       else if ((x = t.match(/^(\d+)\s*번\s*선택$/))) open(owner + "_" + x[1], false);
       else if ((x = t.match(/^이동\s*[:：]?\s*(.+)$/))) cur.next = x[1].trim();
       else if (t === "끝") cur.end = true;
+      else if ((x = t.match(/^구분선\s*[:：]?\s*(.*)$/))) cur.lines.push(["line", x[1]]);
       continue;
     }
     if (!cur) open("start", true);
@@ -156,6 +159,14 @@ let S = null;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
 if (!S) { S = { added: [], chats: {}, unread: {}, pos: {}, mail: D.mail.map(m => !!m.read), me: { ...D.me } }; D.characters.forEach(ensure); }
 if (!S.me) S.me = { ...D.me };
+/* 예전에 스크립트 로드가 실패해 저장된 빈 상태를 자동 복구 */
+D.characters.concat(D.recommended.filter(r => S.added.includes(r.id))).forEach(c => {
+  const n = c.script && c.script.nodes[c.script.start], p = S.pos[c.id];
+  if (!n || (p && p.node && c.script.nodes[p.node])) return;
+  S.pos[c.id] = { node: c.script.start, k: 0 };
+  if (!(S.chats[c.id] || []).length) S.unread[c.id] = lead(n);
+  save();
+});
 function ensure(c) {
   const sc = c.script, n = sc && sc.nodes[sc.start];
   S.chats[c.id] = (c.history || []).map(x => x.slice());
@@ -172,7 +183,7 @@ const gear = `<svg width="34" height="34" viewBox="0 0 24 24" fill="#fff"><path 
 
 /* ---------- 데이터 계산 ---------- */
 const friends = () => [...D.characters, ...D.recommended.filter(r => S.added.includes(r.id)).map(r => ({ ...r, group: r.addAs || "guest", status: r.status || "" }))];
-const lastOf = id => (S.chats[id] || []).slice(-1)[0];
+const lastOf = id => (S.chats[id] || []).filter(m => m[0] !== "line").slice(-1)[0];
 const chatList = () => friends().filter(c => (S.chats[c.id] || []).length || S.unread[c.id]);
 const previewOf = c => { const n = c.script && c.script.nodes[c.script.start]; const s = n && stepsOf(n)[0]; return s ? s[1] : ""; };
 const unreadTotal = () => Object.values(S.unread).reduce((a, b) => a + b, 0);
@@ -222,6 +233,7 @@ function render() {
     t.innerHTML = icons[i](i === tab) + (badges[i] ? `<span class="badge">${badges[i]}</span>` : "");
     t.onclick = () => { tab = i; render(); }; nav.append(t);
   });
+  if (loadErrs.length) { const e = el("div", "sec", "⚠ 스크립트 파일을 불러오지 못했어요: " + loadErrs.join(", ")); e.style.color = "#d33"; main.append(e); }
   [viewFriends, viewChats, viewRecs, viewMail][tab](main);
 }
 
@@ -273,6 +285,7 @@ function displayText(text) {
   return String(text).replace(/\{주인공이름\}/g, currentName);
 }
 function bubble(c, [who, text], prev) {
+  if (who === "line") { const d = el("div", "dv"); if (text) d.append(el("span", "", displayText(text))); return d; }
   const cont = !!prev && prev[0] === who, t = displayText(text);
   const w = el("div", "m " + who + (cont ? " cont" : ""));
   if (who === "me") { const b = el("div"); b.append(el("div", "bb", t)); w.append(b); return w; }
@@ -297,7 +310,7 @@ function play(c) {
   const steps = stepsOf(n); running[c.id] = true;
   (function step() {
     if (p.k < steps.length) {
-      setTimeout(() => { push(c, steps[p.k][0], steps[p.k][1]); p.k++; save(); step(); }, steps[p.k][0] === "me" ? 900 : 800);
+      setTimeout(() => { push(c, steps[p.k][0], steps[p.k][1]); p.k++; save(); step(); }, steps[p.k][0] === "me" ? 900 : steps[p.k][0] === "line" ? 400 : 800);
     } else { running[c.id] = false; if (n.choices) showChoices(); else if (n.next) go(c, n.next); }
   })();
 }
