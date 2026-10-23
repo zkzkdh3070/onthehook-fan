@@ -128,7 +128,7 @@ const byId = id => all.find(c => c.id === id);
 /* ---------- TXT 스크립트 해석 ---------- */
 function parseScript(txt) {
   const nodes = {}, top = []; let cur = null, curId = null, topId = null, owner = null, mode = null, start = null;
-  const open = (id, isTop) => { cur = nodes[id] = { lines: [] }; curId = id; mode = null; if (isTop) { top.push(id); topId = id; start = start || id; } cur.top = topId; };
+  const open = (id, isTop) => { const mv = []; if (isTop && cur) while (cur.lines.length && cur.lines[cur.lines.length - 1][0] === "line") mv.unshift(cur.lines.pop()); cur = nodes[id] = { lines: mv }; curId = id; mode = null; if (isTop) { top.push(id); topId = id; start = start || id; } cur.top = topId; };
   for (const raw of txt.replace(/\r/g, "").split("\n")) {
     const l = raw.trim(); if (!l || l[0] === "#") continue;
     let m, x;
@@ -152,7 +152,7 @@ function parseScript(txt) {
     const n = nodes[id];
     if (n.choices && !n.choices.length) delete n.choices;
     if (!n.choices && !n.next && !n.end) { const nx = top[top.indexOf(n.top) + 1]; if (nx) n.next = nx; }
-    (n.choices || []).forEach(c => { const b = nodes[c.next]; if (b && b.lines[0] && b.lines[0][0] === "me") c.silent = true; });
+    (n.choices || []).forEach(c => { const b = nodes[c.next]; if ((b && b.lines[0] && b.lines[0][0] === "me") || /^\(.*\)$/.test(c.text.trim())) c.silent = true; });
   }
   return { start, nodes };
 }
