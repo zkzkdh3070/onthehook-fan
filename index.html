@@ -124,6 +124,7 @@ await Promise.all([...D.characters, ...D.recommended].filter(c => c.scriptFile).
 const $ = s => document.querySelector(s);
 const all = [...D.characters, ...D.recommended];
 const byId = id => all.find(c => c.id === id);
+const dupIds = all.map(c => c.id).filter((id, i, a) => a.indexOf(id) !== i);
 
 /* ---------- TXT 스크립트 해석 ---------- */
 function parseScript(txt) {
@@ -164,6 +165,7 @@ if (!S) { S = { added: [], chats: {}, unread: {}, pos: {}, mail: D.mail.map(m =>
 if (!S.me) S.me = { ...D.me };
 /* 예전에 스크립트 로드가 실패해 저장된 빈 상태를 자동 복구 */
 D.characters.concat(D.recommended.filter(r => S.added.includes(r.id))).forEach(c => {
+  if (!S.chats[c.id] || !S.pos[c.id]) { ensure(c); save(); }   /* 나중에 추가한 캐릭터 자동 초기화 */
   const n = c.script && c.script.nodes[c.script.start], p = S.pos[c.id];
   if (!n || (p && p.node && c.script.nodes[p.node])) return;
   S.pos[c.id] = { node: c.script.start, k: 0 };
@@ -237,6 +239,7 @@ function render() {
     t.onclick = () => { tab = i; render(); }; nav.append(t);
   });
   if (loadErrs.length) { const e = el("div", "sec", "⚠ 스크립트 파일을 불러오지 못했어요: " + loadErrs.join(", ")); e.style.color = "#d33"; main.append(e); }
+  if (dupIds.length) { const e = el("div", "sec", "⚠ 캐릭터 id가 겹쳐요(대화가 섞입니다): " + [...new Set(dupIds)].join(", ")); e.style.color = "#d33"; main.append(e); }
   [viewFriends, viewChats, viewRecs, viewMail][tab](main);
 }
 
