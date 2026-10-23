@@ -38,7 +38,7 @@ window.GAME_DATA = {
       scriptFile: "scripts/hansegye.txt",        // ← 대화는 이 txt 파일에서 읽어옴
       affinity: { level: 25, color: "#55c4b4", dot: false, title: "스레기의 그녀" },
     },
-              { id: "panda", name: "성솔", group: "fav", status: "🐼",
+    { id: "panda", name: "성솔", group: "fav", status: "🐼",
       avatar: "img/panda.png",
       history: [["them", "카페 갈 거지? 미리 주문할게 자기야~"]], unread: 0,
       affinity: { level: 30, color: "#55c4b4", title: "어라…" } },
