@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>온더훅 (팬게임)</title>
+<title>온더훅: 한세계 공략버전</title>
 <style>
 :root{--teal:#4ac9c4;--teal2:#6dd3d0;--bg:#f7f7f7;--line:#eee;--txt:#222;--sub:#999;--bub:#f2f2f2;--red:#f01010;--yel:#e8ff3a;color-scheme:light}
 @media (prefers-color-scheme:dark){:root{--bg:#2a2e33;--line:#3a3f45;--txt:#eee;--sub:#8a9199;--bub:#3b4046}body,#app{background:#1f2327}}
@@ -336,7 +336,7 @@ function showChoices() {
 }
 function openRoom(c) {
   if (c.id !== "hansegye") {
-    alert("이 팬게임에서 공략할 수 있는 캐릭터는 한세계뿐이에요.");
+    alert("나 말고 누구랑 대화하려고? 아~ 세계는 싫은데~");
     return;
   }
   room = c; S.unread[c.id] = 0; save(); render(); play(c);
