@@ -77,7 +77,7 @@ window.GAME_DATA = {
     { id: "r1", name: "먐", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2079463856422977536/F3hwtP32_400x400.jpg",
       affinity: { title: "최신애호단" } },
     { id: "r2", name: "유공", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2106990308647227392/F6522-lQ_400x400.jpg",
-      affinity: { title: "최신애호단" } },
+      affinity: { title: "중2병애호단" } },
     { id: "r3", name: "산타", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2063136617192415232/H-KfWPWH_400x400.jpg",
       affinity: { title: "도위애호단" } }, 
     { id: "r4", name: "롱", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2109652633489465344/kVDA9jBX_400x400.jpg",
