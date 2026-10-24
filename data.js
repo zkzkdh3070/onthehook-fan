@@ -91,9 +91,7 @@ window.GAME_DATA = {
     { id: "r8", name: "정온", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2111687017612587008/bp8_t9yv_400x400.jpg",
       affinity: { title: "경식이" } },
          { id: "r7", name: "열이", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2108631037156982784/Fbjrjm5g_400x400.jpg",
-      affinity: { title: "열이단 파이팅!!" } },
-    { id: "r8", name: "정온", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2111687017612587008/bp8_t9yv_400x400.jpg",
-      affinity: { title: "경식이" } },
+      affinity: { title: "열이단 파이팅!!" } }
   ],
 
   /* 쪽지 탭 */
