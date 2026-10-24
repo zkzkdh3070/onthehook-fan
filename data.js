@@ -74,21 +74,18 @@ window.GAME_DATA = {
 
   /* 추천 친구 탭. 추가(+)하면 친구 목록 addAs 그룹에 들어가고, script가 있으면 먼저 말을 겁니다 */
   recommended: [
-    { id: "r1", name: "김미영팀장", avatar: "", addAs: "guest",
-      script: { start: "s1", nodes: {
-        s1: { them: ["고객님, 안녕하세요"], choices: [{ text: "누구세요?", next: "a" }, { text: "...", next: "a" }] },
-        a: { them: ["김미영 팀장입니다^^"] } } } },
-    { id: "r2", name: "리빙포인트", avatar: "", addAs: "guest" },
-    { id: "r3", name: "버린물고기", avatar: "", addAs: "guest" },
-    { id: "r4", name: "송도끼", avatar: "", addAs: "guest" },
-    { id: "r5", name: "심리테스트", avatar: "", addAs: "guest" },
-    { id: "r6", name: "연서복", avatar: "", addAs: "guest" },
-    { id: "r7", name: "오뚝이", avatar: "", addAs: "guest" },
-    { id: "r8", name: "오타맨", avatar: "", addAs: "guest" },
+    { id: "r1", name: "먐", avatar: "", addAs: "guest",
+    { id: "r2", name: "유공", avatar: "", addAs: "guest" },
+    { id: "r3", name: "산타", avatar: "", addAs: "guest" },
+    { id: "r4", name: "롱", avatar: "", addAs: "guest" },
+    { id: "r5", name: "월척", avatar: "", addAs: "guest" },
+    { id: "r6", name: "이오", avatar: "", addAs: "guest" },
+    { id: "r7", name: "풀이", avatar: "", addAs: "guest" },
+    { id: "r8", name: "정온", avatar: "", addAs: "guest" },
   ],
 
   /* 쪽지 탭 */
   mail: [
-    { from: "세계", text: "안녕하세요… 제 팬게임 재밌게 즐겨주세요. 짬날때마다 업데이트합니다... 좋은 하루 되세요... 최신화이팅!", read: false },
+    { from: "세계의 한마디", text: "안녕하세요… 제 팬게임 재밌게 즐겨주세요. 짬날때마다 업데이트합니다... 좋은 하루 되세요... 최신화이팅!", read: false },
   ],
 };
