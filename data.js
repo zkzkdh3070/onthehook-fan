@@ -74,14 +74,22 @@ window.GAME_DATA = {
 
   /* 추천 친구 탭. 추가(+)하면 친구 목록 addAs 그룹에 들어가고, script가 있으면 먼저 말을 겁니다 */
   recommended: [
-    { id: "r1", name: "먐", avatar: "", addAs: "guest",
-    { id: "r2", name: "유공", avatar: "", addAs: "guest" },
-    { id: "r3", name: "산타", avatar: "", addAs: "guest" },
-    { id: "r4", name: "롱", avatar: "", addAs: "guest" },
-    { id: "r5", name: "월척", avatar: "", addAs: "guest" },
-    { id: "r6", name: "이오", avatar: "", addAs: "guest" },
-    { id: "r7", name: "풀이", avatar: "", addAs: "guest" },
-    { id: "r8", name: "정온", avatar: "", addAs: "guest" },
+    { id: "r1", name: "먐", avatar: "", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2079463856422977536/F3hwtP32_400x400.jpg",
+      affinity: { title: "최신애호단" } },
+    { id: "r2", name: "유공", avatar: "", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2106990308647227392/F6522-lQ_400x400.jpg",
+      affinity: { title: "최신애호단" } },
+    { id: "r3", name: "산타", avatar: "", addAs: "guest"", avatar: "https://pbs.twimg.com/profile_images/2063136617192415232/H-KfWPWH_400x400.jpg",
+      affinity: { title: "도위애호단" }  }, 
+    { id: "r4", name: "롱", avatar: "", addAs: "guest"", avatar: "https://pbs.twimg.com/profile_images/2109652633489465344/kVDA9jBX_400x400.jpg",
+      affinity: { title: "죽순군판다양~" }  },
+    { id: "r5", name: "월척", avatar: "", addAs: "guest"", avatar: "https://pbs.twimg.com/profile_images/2112034127382028289/bC5cIjBe_400x400.jpg",
+      affinity: { title: "도위애호단" }  },
+    { id: "r6", name: "이오", avatar: "", addAs: "guest"", avatar: "https://pbs.twimg.com/profile_images/2109255822434009088/XErWaTeN_400x400.jpg",
+      affinity: { title: "도위유기하기모임" }  },
+    { id: "r7", name: "풀이", avatar: "", addAs: "guest"", avatar: "https://pbs.twimg.com/profile_images/1914738569882882048/cnnZil-H_400x400.png",
+      affinity: { title: "오애호단" }  },
+    { id: "r8", name: "정온", avatar: "", addAs: "guest"", avatar: "https://pbs.twimg.com/profile_images/2111687017612587008/bp8_t9yv_400x400.jpg",
+      affinity: { title: "경식이" }  },
   ],
 
   /* 쪽지 탭 */
