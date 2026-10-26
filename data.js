@@ -89,9 +89,11 @@ window.GAME_DATA = {
     { id: "r7", name: "풀", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/1914738569882882048/cnnZil-H_400x400.png",
       affinity: { title: "오리애호단" } },
     { id: "r8", name: "정온", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2111687017612587008/bp8_t9yv_400x400.jpg",
-      affinity: { title: "경식이" } },
+      affinity: { title: "아헤 화이팅!" } },
     { id: "r9", name: "열이", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2108631037156982784/Fbjrjm5g_400x400.jpg",
-      affinity: { title: "열이단 파이팅!!" } }
+      affinity: { title: "열이단 파이팅!!" } },
+   { id: "r10", name: "기사", addAs: "guest", avatar: "https://pbs.twimg.com/profile_images/2114268208362586112/igTakOB9_400x400.jpg",
+      affinity: { title: "너네도 국민수를 앓아봐야돼 여동생들아" } }
   ],
 
   /* 쪽지 탭 */
