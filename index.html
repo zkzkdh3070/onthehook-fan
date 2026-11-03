@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>온더훅: 한세계 공략버전</title>
+<title>온더훅: 한세계 공략버전</title> /*---사이트 이름---*/
 <style>
 :root{--teal:#4ac9c4;--teal2:#6dd3d0;--bg:#f7f7f7;--line:#eee;--txt:#222;--sub:#999;--bub:#f2f2f2;--red:#f01010;--yel:#e8ff3a;color-scheme:light}
 @media (prefers-color-scheme:dark){:root{--bg:#2a2e33;--line:#3a3f45;--txt:#eee;--sub:#8a9199;--bub:#3b4046}body,#app{background:#1f2327}}
@@ -95,8 +95,25 @@ form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var
 .profile-modal.fr{min-height:470px}.fr .gauge{margin:85px auto 0;display:block}.fr .dsc{color:#888;font-size:16px;white-space:pre-line}
 .fr .ttl{font-size:21px;margin:26px 0 8px}
 .dv{border-top:2px solid var(--line);margin:22px 0 4px;text-align:center}.dv span{display:block;padding-top:6px;color:var(--sub);font-size:14px}
-#toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:88%;background:#000c;color:#fff;padding:10px 18px;border-radius:22px;font-size:16px;text-align:center;z-index:40;opacity:0;pointer-events:none}#toast.on{opacity:1}
-@media (prefers-reduced-motion:no-preference){.m{animation:pop .18s ease-out}@keyframes pop{from{opacity:0;transform:translateY(6px)}}#toast{transition:opacity .3s}}
+#toast{
+position:fixed;
+left:50%;
+top:calc(120px + env(safe-area-inset-top) + 12px);
+bottom:auto;
+transform:translateX(-50%);
+max-width:88%;
+width:max-content;
+background:#000c;
+color:#fff;
+padding:10px 18px;
+border-radius:22px;
+font-size:16px;
+text-align:center;
+z-index:40;
+opacity:0;
+pointer-events:none;
+box-sizing:border-box
+}
 </style>
 </head>
 <body>
