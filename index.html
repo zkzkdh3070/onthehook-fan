@@ -38,7 +38,7 @@ main{flex:1;overflow-y:auto;overscroll-behavior:contain}
 .mail{padding:14px 26px;border-bottom:2px solid var(--line);cursor:pointer}
 .mail b{font-weight:400;font-size:19px}.mail.un b::after{content:" ●";color:var(--red);font-size:12px}
 .mail p{color:var(--sub);margin-top:6px;display:none;font-size:16px}.mail.open p{display:block}
-#chat{padding:12px 14px 20px}
+#chat,#finChat{padding:12px 14px 20px}
 .m{display:flex;gap:10px;padding-top:14px;align-items:flex-start}
 .m.cont{padding-top:6px}
 .m.cont .bb,.m.me.cont .bb{border-radius:16px}
@@ -52,11 +52,11 @@ form{display:flex;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bot
 form input{flex:1;min-width:0;height:48px;border:3px solid var(--line);border-radius:8px;padding:0 12px;font:inherit;font-size:18px;background:transparent;color:inherit}
 form input:focus{outline:2px solid var(--teal);border-color:transparent}
 form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var(--teal);color:#fff;font:inherit;font-size:19px;cursor:pointer}
-#choices{display:flex;flex-direction:column;gap:8px;padding:10px 12px calc(12px + env(safe-area-inset-bottom));flex:none;border-top:2px solid var(--line)}#choices[hidden]{display:none}.ch{border:3px solid var(--teal);background:transparent;color:var(--txt);border-radius:12px;padding:12px 16px;font:inherit;font-size:19px;cursor:pointer;text-align:left}.ch:hover,.ch:focus-visible{background:var(--teal);color:#fff;outline:0}
+#choices,#finChoices{display:flex;flex-direction:column;gap:8px;padding:10px 12px calc(12px + env(safe-area-inset-bottom));flex:none;border-top:2px solid var(--line)}#choices[hidden],#finChoices[hidden]{display:none}.ch{border:3px solid var(--teal);background:transparent;color:var(--txt);border-radius:12px;padding:12px 16px;font:inherit;font-size:19px;cursor:pointer;text-align:left}.ch:hover,.ch:focus-visible{background:var(--teal);color:#fff;outline:0}
 
 .profile-overlay{position:fixed;inset:0;background:#0006;display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}
 .profile-overlay[hidden]{display:none}
-.profile-modal{position:relative;background:#fff;color:#222;width:100%;max-width:360px;border-radius:34px;padding:28px 24px 24px;text-align:center;box-shadow:0 8px 32px #0002}
+.profile-modal{position:relative;background:#fff;color:#222;width:100%;max-width:360px;border-radius:34px;padding:28px 24px 24px;text-align:center;box-shadow:0 8px 32px #0002;max-height:calc(100dvh - 36px);overflow-y:auto}
 .profile-close{position:absolute;right:18px;top:12px;border:0;background:none;color:#777;font-size:34px;cursor:pointer}
 .profile-avatar{width:100px;height:100px;border-radius:50%;margin:18px auto 22px;background:#d8f7f5;display:flex;align-items:center;justify-content:center}
 .profile-modal label{display:block;text-align:left;color:#777;font-size:13px;margin:12px 4px 5px}
@@ -65,6 +65,25 @@ form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var
 .profile-actions button{flex:1;border:0;border-radius:9px;padding:12px 8px;font:inherit;font-size:16px;cursor:pointer}
 .profile-cancel{background:#eee;color:#555}.profile-save{background:var(--teal);color:#fff}
 
+
+.av-tools{display:flex;gap:8px;justify-content:center;margin:10px 0 2px}
+.av-btn{border:2px solid #e5e5e5;background:#fff;color:#555;border-radius:8px;padding:8px 12px;font:inherit;font-size:15px;cursor:pointer}
+.av-btn:focus-visible{outline:3px solid var(--teal)}
+.profile-modal .av-url{display:flex;gap:8px}
+.profile-modal .av-url input{flex:1;min-width:0;width:auto}
+.av-url .av-btn{height:44px;flex:none}
+.av-msg{min-height:20px;color:#d33;font-size:13px;text-align:left;margin:6px 4px 0}
+.av-msg.ok{color:#2a9d8f}
+.profile-modal input.sr{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;padding:0}
+#finOverlay{position:fixed;inset:0;z-index:30;display:flex;justify-content:center;background:#ddd}#finOverlay[hidden]{display:none}
+#finOverlay[hidden]{display:none}
+#finPanel{width:100%;max-width:480px;height:100dvh;background:#fff;display:flex;flex-direction:column;overflow:hidden}
+#finPanel header{flex:none}
+#finMain{flex:1;overflow-y:auto;overscroll-behavior:contain}
+#finChat{min-height:100%;padding-bottom:24px}
+#finDot{cursor:pointer;outline:0}
+#finDot:focus-visible circle:last-child{stroke:#4ac9c4;stroke-width:1.5}
+@media(prefers-color-scheme:dark){#finOverlay,#finPanel{background:#1f2327}}
 #splash{position:fixed;inset:0;background:#4ac9c4;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;color:#fff;font:400 28px "Noto Sans KR","Malgun Gothic",sans-serif;transition:opacity .4s}#splash.out{opacity:0}
 .fr .av.big{width:112px;height:112px;margin:24px auto 18px}
 .fr h2{font-size:24px;font-weight:400;margin:0 0 6px}
@@ -76,7 +95,8 @@ form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var
 .profile-modal.fr{min-height:470px}.fr .gauge{margin:85px auto 0;display:block}.fr .dsc{color:#888;font-size:16px;white-space:pre-line}
 .fr .ttl{font-size:21px;margin:26px 0 8px}
 .dv{border-top:2px solid var(--line);margin:22px 0 4px;text-align:center}.dv span{display:block;padding-top:6px;color:var(--sub);font-size:14px}
-@media (prefers-reduced-motion:no-preference){.m{animation:pop .18s ease-out}@keyframes pop{from{opacity:0;transform:translateY(6px)}}}
+#toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:88%;background:#000c;color:#fff;padding:10px 18px;border-radius:22px;font-size:16px;text-align:center;z-index:40;opacity:0;pointer-events:none}#toast.on{opacity:1}
+@media (prefers-reduced-motion:no-preference){.m{animation:pop .18s ease-out}@keyframes pop{from{opacity:0;transform:translateY(6px)}}#toast{transition:opacity .3s}}
 </style>
 </head>
 <body>
@@ -90,10 +110,18 @@ form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var
       <button id="profileClose" class="profile-close" aria-label="닫기">×</button>
       <div class="profile-avatar" id="profileAvatar"></div>
       <h2 id="profileTitle" style="font-size:23px;font-weight:500">내 프로필</h2>
+      <div class="av-tools">
+        <button type="button" id="avPick" class="av-btn">사진 올리기</button>
+        <button type="button" id="avReset" class="av-btn">기본 이미지</button>
+        <input type="file" id="avFile" class="sr" accept="image/png,image/jpeg,image/webp,image/gif" tabindex="-1" aria-hidden="true">
+      </div>
       <label for="profileName">이름</label>
       <input id="profileName" maxlength="30" autocomplete="off">
       <label for="profileStatus">상태 메시지</label>
       <input id="profileStatus" maxlength="80" autocomplete="off" placeholder="상태 메시지를 입력하세요">
+      <label for="profileAvatarUrl">프로필 사진 링크 (이미지 주소)</label>
+      <div class="av-url"><input id="profileAvatarUrl" inputmode="url" autocomplete="off" placeholder="https://..."><button type="button" id="avUrlGo" class="av-btn">적용</button></div>
+      <div id="avMsg" class="av-msg" role="status"></div>
       <div class="profile-actions">
         <button id="profileCancel" class="profile-cancel">취소</button>
         <button id="profileSave" class="profile-save">저장</button>
@@ -107,6 +135,13 @@ form button{height:48px;padding:0 20px;border:0;border-radius:8px;background:var
     <div id="frBody"></div>
   </section>
 </div>
+<div id="finOverlay" hidden>
+  <section id="finPanel" role="dialog" aria-modal="true" aria-labelledby="finTitle">
+    <header><button id="finBack" class="back" aria-label="닫기" hidden>‹</button><span id="finTitle"></span><span class="sp"></span></header>
+    <main id="finMain"><div id="finChat"></div></main>
+    <div id="finChoices" hidden></div>
+  </section>
+</div>
 <div id="splash"><svg width="220" height="154" viewBox="0 0 40 28" fill="#fff"><path d="M3 14C9 4 21 3 28 12L38 6v16l-10-6C21 25 9 24 3 14z"/><circle cx="11" cy="12.2" r="1.5" fill="#4ac9c4"/></svg><div>ON THE HOOK</div></div>
 <script>function showErr(m){const e=document.getElementById("main");if(e)e.innerHTML='<div style="padding:20px;color:#d33;font:16px sans-serif;white-space:pre-wrap;word-break:break-all"></div>',e.firstChild.textContent="⚠ 오류가 났어요. 이 글을 캡처해서 보내 주세요.\n\n"+m}
 addEventListener("error",ev=>showErr(ev.message+" ("+String(ev.filename||"").split("/").pop()+":"+ev.lineno+")"));
@@ -116,9 +151,9 @@ const T0=Date.now();function hideSplash(){setTimeout(()=>{const s=document.getEl
 (async () => {
 if (!window.GAME_DATA) throw new Error("data.js를 읽지 못했어요. 파일 이름·위치 또는 문법 오류(쉼표, 따옴표)를 확인하세요.");
 const D = window.GAME_DATA, KEY = "onhook_v" + D.version;
-const loadErrs = [];
+const loadErrs = [], scriptWarns = [];
 await Promise.all([...D.characters, ...D.recommended].filter(c => c.scriptFile).map(async c => {
-  try { const r = await fetch(c.scriptFile, { cache: "no-cache" }); if (!r.ok) throw new Error(r.status); c.script = parseScript(await r.text()); }
+  try { const r = await fetch(c.scriptFile, { cache: "no-cache" }); if (!r.ok) throw new Error(r.status); c.script = parseScript(await r.text(), c.scriptFile); }
   catch (e) { loadErrs.push(c.scriptFile); console.warn("스크립트 로드 실패:", c.scriptFile, e); }
 }));
 const $ = s => document.querySelector(s);
@@ -127,9 +162,9 @@ const byId = id => all.find(c => c.id === id);
 const dupIds = all.map(c => c.id).filter((id, i, a) => a.indexOf(id) !== i);
 
 /* ---------- TXT 스크립트 해석 ---------- */
-function parseScript(txt) {
-  const nodes = {}, top = []; let cur = null, curId = null, topId = null, owner = null, mode = null, start = null;
-  const open = (id, isTop) => { const mv = []; if (isTop && cur) while (cur.lines.length && cur.lines[cur.lines.length - 1][0] === "line") mv.unshift(cur.lines.pop()); cur = nodes[id] = { lines: mv }; curId = id; mode = null; if (isTop) { top.push(id); topId = id; start = start || id; } cur.top = topId; };
+function parseScript(txt, file) {
+  const nodes = {}, top = []; let cur = null, curId = null, topId = null, owner = null, mode = null, start = null, fin = null;
+  const open = (id, isTop) => { const mv = []; if (isTop && cur && (/^(finish|finsih)/i.test(cur.top) === /^(finish|finsih)/i.test(id))) while (cur.lines.length && cur.lines[cur.lines.length - 1][0] === "line") mv.unshift(cur.lines.pop()); cur = nodes[id] = { lines: mv }; curId = id; mode = null; if (isTop) { top.push(id); topId = id; if (/^(finish|finsih)/i.test(id)) fin = fin || id; else start = start || id; } cur.top = topId; };
   for (const raw of txt.replace(/\r/g, "").split("\n")) {
     const l = raw.trim(); if (!l || l[0] === "#") continue;
     let m, x;
@@ -141,6 +176,7 @@ function parseScript(txt) {
       else if ((x = t.match(/^(\d+)\s*번\s*선택$/))) open(owner + "_" + x[1], false);
       else if ((x = t.match(/^이동\s*[:：]?\s*(.+)$/))) cur.next = x[1].trim();
       else if (t === "끝") cur.end = true;
+      else if ((x = t.match(/^호감도(?:\s+(.*))?$/))) { const sp = parseAff(x[1] || "", file, t); if (sp) cur.lines.push(["aff", sp]); }
       else if ((x = t.match(/^구분선\s*[:：]?\s*(.*)$/))) cur.lines.push(["line", x[1]]);
       continue;
     }
@@ -152,17 +188,42 @@ function parseScript(txt) {
   for (const id in nodes) {
     const n = nodes[id];
     if (n.choices && !n.choices.length) delete n.choices;
-    if (!n.choices && !n.next && !n.end) { const nx = top[top.indexOf(n.top) + 1]; if (nx) n.next = nx; }
+    if (!n.choices && !n.next && !n.end) {
+      const i = top.indexOf(n.top);
+      const isFinish = /^(finish|finsih)/i.test(n.top);
+      const nx = top.slice(i + 1).find(t => /^(finish|finsih)/i.test(t) === isFinish);
+      if (nx) n.next = nx;
+    }
     (n.choices || []).forEach(c => { const b = nodes[c.next]; if ((b && b.lines[0] && b.lines[0][0] === "me") || /^\(.*\)$/.test(c.text.trim())) c.silent = true; });
   }
-  return { start, nodes };
+  return { start, fin, nodes };
+}
+
+/* [호감도 +20 | 제목 일단은 친구? | 설명 첫 줄\n둘째 줄 | 색 #55c4b4 | 반복] 해석 */
+function parseAff(src, file, raw) {
+  const sp = {}; let ok = false;
+  for (const part of src.split("|").map(v => v.trim()).filter(Boolean)) {
+    let m;
+    if ((m = part.match(/^([+-])\s*(\d+)$/))) { sp.delta = (m[1] === "+" ? 1 : -1) * +m[2]; ok = true; }
+    else if ((m = part.match(/^=\s*(\d+)$/))) { sp.set = +m[1]; ok = true; }
+    else if ((m = part.match(/^제목\s+(.+)$/))) { sp.title = m[1]; ok = true; }
+    else if ((m = part.match(/^설명\s+(.+)$/))) { sp.desc = m[1].replace(/\\n/g, "\n"); ok = true; }
+    else if ((m = part.match(/^색\s+(#[0-9a-fA-F]{3,8})$/))) { sp.color = m[1]; ok = true; }
+    else if (part === "반복") sp.repeat = true;
+    else scriptWarns.push((file || "") + " → [" + raw + "]  ('" + part + "'을(를) 해석하지 못했어요)");
+  }
+  if (!ok && !scriptWarns.some(w => w.includes("[" + raw + "]"))) scriptWarns.push((file || "") + " → [" + raw + "]  (바꿀 내용이 없어요. +숫자, -숫자, =숫자, 제목, 설명, 색 중 하나는 필요해요)");
+  return ok ? sp : null;
 }
 
 /* ---------- 저장 상태 ---------- */
 let S = null;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
-if (!S) { S = { added: [], chats: {}, unread: {}, pos: {}, mail: D.mail.map(m => !!m.read), me: { ...D.me } }; D.characters.forEach(ensure); }
+if (!S) { S = { added: [], chats: {}, unread: {}, pos: {}, aff: {}, affDone: {}, clear: {}, mail: D.mail.map(m => !!m.read), me: { ...D.me } }; D.characters.forEach(ensure); }
 if (!S.me) S.me = { ...D.me };
+if (!S.aff) S.aff = {};          /* 예전 저장본 호환 */
+if (!S.affDone) S.affDone = {};
+if (!S.clear) S.clear = {};
 /* 예전에 스크립트 로드가 실패해 저장된 빈 상태를 자동 복구 */
 D.characters.concat(D.recommended.filter(r => S.added.includes(r.id))).forEach(c => {
   if (!S.chats[c.id] || !S.pos[c.id]) { ensure(c); save(); }   /* 나중에 추가한 캐릭터 자동 초기화 */
@@ -173,12 +234,70 @@ D.characters.concat(D.recommended.filter(r => S.added.includes(r.id))).forEach(c
   save();
 });
 function ensure(c) {
+  if (S.aff) delete S.aff[c.id];
+  if (S.clear) delete S.clear[c.id];
+  if (S.affDone) Object.keys(S.affDone).forEach(k => { if (k.startsWith(c.id + "/")) delete S.affDone[k]; });
   const sc = c.script, n = sc && sc.nodes[sc.start];
   S.chats[c.id] = (c.history || []).map(x => x.slice());
   S.pos[c.id] = { node: sc && sc.start, k: 0 };
   S.unread[c.id] = c.unread != null ? c.unread : n ? lead(n) : 0;
 }
-function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { return false; } }
+
+/* ---------- 호감도 ---------- */
+const clamp = v => Math.max(0, Math.min(100, Math.round(+v) || 0));
+const safeColor = v => /^#[0-9a-f]{3,8}$/i.test(String(v)) ? v : "#55c4b4";
+/* 최종 표시값 = 기본값 < affinityDefault < 캐릭터 affinity < 현재 구간(stages) < 스크립트가 직접 바꾼 값 */
+function affOf(c) {
+  const st = (S.aff && S.aff[c.id]) || {};
+  const base = Object.assign({ level: 25, title: "", color: "#55c4b4", dot: false }, D.affinityDefault, c.affinity);
+  const lv = clamp(st.level != null ? st.level : base.level);
+  const stage = (base.stages || []).filter(g => (g.from || 0) <= lv).sort((x, y) => (y.from || 0) - (x.from || 0))[0];
+  const a = Object.assign({}, base, stage || {}, { level: lv });
+  ["title", "desc", "color"].forEach(k => { if (st[k] != null) a[k] = st[k]; });
+  a.color = safeColor(a.color);
+  return a;
+}
+const TOAST_AFF = "{이름}님은 {주인공이름}님을 [{호감도}]라고 생각하고 있습니다.";
+const TOAST_CLEAR = "[{이름}]의 공략이 완료 되었습니다.";
+let toastQueue = [], toastBusy = false;
+function toast(msg) {
+  toastQueue.push(msg);
+  if (!toastBusy) nextToast();
+}
+function nextToast() {
+  const msg = toastQueue.shift();
+  if (msg == null) { toastBusy = false; return; }
+  toastBusy = true;
+  let t = document.getElementById("toast");
+  if (!t) { t = document.createElement("div"); t.id = "toast"; t.setAttribute("role", "status"); t.setAttribute("aria-live", "polite"); document.body.append(t); }
+  t.textContent = msg; t.classList.add("on");
+  setTimeout(() => { t.classList.remove("on"); setTimeout(nextToast, 350); }, 2600);
+}
+function toastText(template, c) {
+  const a = affOf(c);
+  return String(template)
+    .replace(/\{이름\}/g, c.name)
+    .replace(/\{호감도\}/g, a.title || "")
+    .replace(/\{주인공이름\}/g, (S.me && S.me.name) || D.me.name || "주인공");
+}
+function applyAff(c, sp, key) {
+  if (!sp.repeat) { if (S.affDone[key]) return; S.affDone[key] = 1; }
+  const before = affOf(c).level;
+  const st = S.aff[c.id] = S.aff[c.id] || {};
+  let lv = sp.set != null ? sp.set : before;
+  if (sp.delta) lv += sp.delta;
+  st.level = clamp(lv);
+  ["title", "desc", "color"].forEach(k => { if (sp[k] != null) st[k] = sp[k]; });
+  if (st.level > before && D.affinityToast !== false) {
+    toast(toastText(typeof D.affinityToast === "string" ? D.affinityToast : TOAST_AFF, c));
+  }
+  if (st.level >= 100 && !S.clear[c.id]) {
+    S.clear[c.id] = { viewed: false };
+    save();
+    if (D.clearToast !== false) toast(toastText(typeof D.clearToast === "string" ? D.clearToast : TOAST_CLEAR, c));
+  }
+}
 
 /* ---------- 아이콘 ---------- */
 const fish = (c, w = 40, plus) => `<svg width="${w}" height="${w * .7}" viewBox="0 0 40 28" fill="${c}"><path d="M3 14C9 4 21 3 28 12L38 6v16l-10-6C21 25 9 24 3 14z"/>${plus ? `<path d="M33 1v8M29 5h8" stroke="${c}" stroke-width="2.4" fill="none"/>` : ""}</svg>`;
@@ -190,14 +309,26 @@ const gear = `<svg width="34" height="34" viewBox="0 0 24 24" fill="#fff"><path 
 const friends = () => [...D.characters, ...D.recommended.filter(r => S.added.includes(r.id)).map(r => ({ ...r, group: r.addAs || "guest", status: r.status || "" }))];
 const lastOf = id => (S.chats[id] || []).filter(m => m[0] !== "line").slice(-1)[0];
 const chatList = () => friends().filter(c => (S.chats[c.id] || []).length || S.unread[c.id]);
-const previewOf = c => { const n = c.script && c.script.nodes[c.script.start]; const s = n && stepsOf(n)[0]; return s ? s[1] : ""; };
+const previewOf = c => { const n = c.script && c.script.nodes[c.script.start]; const s = n && stepsOf(n).find(x => x[0] !== "aff"); return s ? s[1] : ""; };
 const unreadTotal = () => Object.values(S.unread).reduce((a, b) => a + b, 0);
 const recs = () => D.recommended.filter(r => !S.added.includes(r.id));
 
 /* ---------- 화면 ---------- */
 let tab = 0, room = null, timers = [];
 const el = (t, cls, txt) => { const e = document.createElement(t); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
-const avatar = c => { const a = el("div", "av"); if (c.avatar) a.style.backgroundImage = `url("${c.avatar}")`; else a.innerHTML = fish("#fff", 30); return a; };
+function safeImg(u) {
+  u = String(u || "").trim();
+  if (!u || u.length > 600000) return "";
+  if (/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(u)) return u;
+  if (/^https?:\/\//i.test(u)) { try { return new URL(u).href; } catch (e) { return ""; } }
+  return /^[^"'()\s<>]+$/.test(u) && !/^[a-z][a-z0-9+.-]*:/i.test(u) ? u : "";
+}
+function setAvatarBg(node, value) {
+  const u = safeImg(value);
+  node.style.backgroundImage = u ? 'url("' + u + '")' : "";
+  return !!u;
+}
+const avatar = c => { const a = el("div", "av"); if (!setAvatarBg(a, c.avatar)) a.innerHTML = fish("#fff", 30); return a; };
 
 function render() {
   const hd = $("#hd"), nav = $("#nav"), main = $("#main");
@@ -239,6 +370,7 @@ function render() {
     t.onclick = () => { tab = i; render(); }; nav.append(t);
   });
   if (loadErrs.length) { const e = el("div", "sec", "⚠ 스크립트 파일을 불러오지 못했어요: " + loadErrs.join(", ")); e.style.color = "#d33"; main.append(e); }
+  if (scriptWarns.length) { const e = el("div", "sec", "⚠ 스크립트 호감도 문법을 확인하세요: " + scriptWarns.join(" / ")); e.style.color = "#d33"; main.append(e); }
   if (dupIds.length) { const e = el("div", "sec", "⚠ 캐릭터 id가 겹쳐요(대화가 섞입니다): " + [...new Set(dupIds)].join(", ")); e.style.color = "#d33"; main.append(e); }
   [viewFriends, viewChats, viewRecs, viewMail][tab](main);
 }
@@ -302,7 +434,7 @@ function bubble(c, [who, text], prev) {
 const running = {};
 const nodeOf = c => c.script && c.script.nodes[S.pos[c.id].node];
 function stepsOf(n) { return n.lines || [...(n.them || []).map(t => ["them", t]), ...(n.auto ? [["me", n.auto]] : [])]; }
-function lead(n) { let k = 0; for (const s of stepsOf(n)) { if (s[0] !== "them") break; k++; } return k; }
+function lead(n) { let k = 0; for (const s of stepsOf(n)) { if (s[0] === "aff") continue; if (s[0] !== "them") break; k++; } return k; }
 function push(c, who, text) {
   const prev = (S.chats[c.id] || []).slice(-1)[0];
   (S.chats[c.id] = S.chats[c.id] || []).push([who, text]);
@@ -317,10 +449,10 @@ function play(c) {
   const WAIT = D.dividerWait != null ? D.dividerWait : 5000;   /* 구분선 뒤 대기(ms) */
   const finish = () => { running[c.id] = false; if (n.choices) showChoices(); else if (n.next) go(c, n.next); };
   (function step() {
-    const prev = steps[p.k - 1];
+    let prev; for (let i = p.k - 1; i >= 0; i--) if (steps[i][0] !== "aff") { prev = steps[i]; break; }   /* 호감도 줄은 대기 시간 계산에서 제외 */
     if (p.k < steps.length) {
-      const cur = steps[p.k], d = prev && prev[0] === "line" ? WAIT : cur[0] === "me" ? 900 : cur[0] === "line" ? 400 : 800;
-      setTimeout(() => { push(c, cur[0], cur[1]); p.k++; save(); step(); }, d);
+      const cur = steps[p.k], isAff = cur[0] === "aff", d = isAff ? 0 : prev && prev[0] === "line" ? WAIT : cur[0] === "me" ? 900 : cur[0] === "line" ? 400 : 800;
+      setTimeout(() => { if (isAff) applyAff(c, cur[1], c.id + "/" + p.node + "/" + p.k); else push(c, cur[0], cur[1]); p.k++; save(); step(); }, d);
     } else if (prev && prev[0] === "line") setTimeout(finish, WAIT);
     else finish();
   })();
@@ -346,12 +478,18 @@ function closeRoom() { room = null; $("#choices").hidden = true; render(); }
 function openFriend(c, info) {
   const b = $("#frBody"); b.innerHTML = "";
   if (info) {
-    const a = Object.assign({ level: 25, title: "", color: "#55c4b4", dot: false }, D.affinityDefault, c.affinity), y = 40 * (1 - Math.max(0, Math.min(100, a.level)) / 100);
+    const a = affOf(c), y = 40 * (1 - a.level / 100);
     const P = "M0 19.600C10 6 28 0 43 0C58 0 72 8 82 15L100 6.800Q94 19.600 100 32.700L82 24C72 32 58 40 43 40C28 40 10 33 0 19.600Z";
-    b.innerHTML = `<svg class="gauge" width="220" height="87" viewBox="-8 -6 116 46" role="img" aria-label="호감도"><defs><clipPath id="fc"><rect x="0" y="${y}" width="100" height="40"/></clipPath></defs><path d="${P}" fill="#ccc"/><path d="${P}" fill="${a.color}" clip-path="url(#fc)"/><circle cx="22.7" cy="16.3" r="3.2" fill="#fff"/>${a.dot ? '<circle cx="102.4" cy="-0.5" r="4.3" fill="#ccc"/>' : ""}</svg><hr style="margin-top:89px"><div class="ttl"></div><div class="dsc"></div>`;
+    const cleared = !!S.clear[c.id], finishAvailable = !!(c.script && c.script.fin);
+    const dot = cleared && finishAvailable
+      ? `<g id="finDot" role="button" tabindex="0" aria-label="공략 완료 스크립트 보기"><circle cx="102.4" cy="-0.5" r="8" fill="transparent"/><circle cx="102.4" cy="-0.5" r="4.3" fill="${S.clear[c.id].viewed ? "#ccc" : "#f01010"}"/></g>`
+      : a.dot ? '<circle cx="102.4" cy="-0.5" r="4.3" fill="#ccc"/>' : "";
+    b.innerHTML = `<svg class="gauge" width="220" height="87" viewBox="-8 -6 116 46" role="img" aria-label="호감도"><defs><clipPath id="fc"><rect x="0" y="${y}" width="100" height="40"/></clipPath></defs><path d="${P}" fill="#ccc"/><path d="${P}" fill="${a.color}" clip-path="url(#fc)"/><circle cx="22.7" cy="16.3" r="3.2" fill="#fff"/>${dot}</svg><hr style="margin-top:89px"><div class="ttl"></div><div class="dsc"></div>`;
     b.querySelector(".ttl").textContent = "[" + a.title + "]"; b.querySelector(".dsc").textContent = a.desc || "";
+    const finDot = b.querySelector("#finDot");
+    if (finDot) { finDot.onclick = () => openFinish(c); finDot.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openFinish(c); } }; }
   } else {
-    const a = avatar(c); a.classList.add("big"); if (!c.avatar) a.innerHTML = fish("#fff", 60);
+    const a = avatar(c); a.classList.add("big"); if (!safeImg(c.avatar)) a.innerHTML = fish("#fff", 60);
     const btn = (label, svg, fn) => { const x = el("button"); x.type = "button"; x.setAttribute("aria-label", label); x.innerHTML = svg; x.onclick = fn; return x; };
     const acts = el("div", "acts");
     acts.append(
@@ -367,13 +505,126 @@ function closeFriend() { $("#friendOverlay").hidden = true; }
 $("#frClose").onclick = closeFriend;
 $("#friendOverlay").addEventListener("click", e => { if (e.target.id === "friendOverlay") closeFriend(); });
 
+/* ---------- 공략 완료 스크립트 ---------- */
+let finishSession = null;
+function openFinish(c) {
+  if (!c.script || !c.script.fin || !S.clear[c.id]) return;
+  const session = finishSession = { c, last: null };
+  $("#finTitle").textContent = c.name + " · 공략 완료";
+  $("#finBack").hidden = true;
+  $("#finChat").innerHTML = "";
+  $("#finChoices").innerHTML = "";
+  $("#finChoices").hidden = true;
+  $("#finOverlay").hidden = false;
+  playFinishNode(session, c.script.fin);
+}
+function finishBubble(session, line) {
+  const chat = $("#finChat");
+  chat.append(bubble(session.c, line, session.last));
+  session.last = line;
+  $("#finMain").scrollTop = $("#finMain").scrollHeight;
+}
+function playFinishNode(session, id) {
+  if (finishSession !== session) return;
+  const node = session.c.script.nodes[id];
+  if (!node) return finishDone(session);
+  const lines = (node.lines || []).filter(line => line[0] !== "aff");
+  const wait = D.dividerWait != null ? D.dividerWait : 5000;
+  let k = 0;
+  const next = () => {
+    if (finishSession !== session) return;
+    if (node.choices) showFinishChoices(session, node);
+    else if (node.next) playFinishNode(session, node.next);
+    else finishDone(session);
+  };
+  const step = () => {
+    if (finishSession !== session) return;
+    const prev = lines[k - 1];
+    if (k < lines.length) {
+      const line = lines[k];
+      const delay = prev && prev[0] === "line" ? wait : line[0] === "me" ? 900 : line[0] === "line" ? 400 : 800;
+      setTimeout(() => { if (finishSession !== session) return; finishBubble(session, line); k++; step(); }, delay);
+    } else if (prev && prev[0] === "line") setTimeout(next, wait);
+    else next();
+  };
+  step();
+}
+function showFinishChoices(session, node) {
+  const box = $("#finChoices");
+  box.innerHTML = "";
+  node.choices.forEach(choice => {
+    const btn = el("button", "ch", choice.text);
+    btn.onclick = () => {
+      box.hidden = true;
+      if (!choice.silent) finishBubble(session, ["me", choice.say || choice.text]);
+      playFinishNode(session, choice.next);
+    };
+    box.append(btn);
+  });
+  box.hidden = false;
+  $("#finMain").scrollTop = $("#finMain").scrollHeight;
+}
+function finishDone(session) {
+  if (finishSession !== session) return;
+  const record = S.clear[session.c.id];
+  if (record && !record.viewed) { record.viewed = true; save(); }
+  $("#finBack").hidden = false;
+  const box = $("#finChoices");
+  box.innerHTML = "";
+  const exit = el("button", "ch", "나가기");
+  exit.onclick = closeFinish;
+  box.append(exit);
+  box.hidden = false;
+  $("#finMain").scrollTop = $("#finMain").scrollHeight;
+}
+function closeFinish() {
+  const c = finishSession && finishSession.c;
+  finishSession = null;
+  $("#finOverlay").hidden = true;
+  if (c && !$("#friendOverlay").hidden) openFriend(c, true);
+}
+
+/* ---------- 내 프로필 사진 편집 ---------- */
+let pendingAvatar = null, avatarToken = 0;
+function avatarMessage(message, good) {
+  const box = $("#avMsg");
+  box.textContent = message || "";
+  box.className = "av-msg" + (good ? " ok" : "");
+}
+function previewAvatar(value) {
+  const box = $("#profileAvatar");
+  box.innerHTML = "";
+  if (setAvatarBg(box, value)) { box.style.backgroundSize = "cover"; box.style.backgroundPosition = "center"; }
+  else box.innerHTML = fish("#4ac9c4", 56);
+}
+function fileToAvatar(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      try {
+        const w = img.naturalWidth, h = img.naturalHeight, side = Math.min(w, h);
+        if (!side) return reject(new Error("invalid image"));
+        const canvas = document.createElement("canvas"); canvas.width = canvas.height = 256;
+        canvas.getContext("2d").drawImage(img, (w-side)/2, (h-side)/2, side, side, 0, 0, 256, 256);
+        resolve(canvas.toDataURL("image/jpeg", 0.88));
+      } catch (error) { reject(error); }
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("image load failed")); };
+    img.src = url;
+  });
+}
 function openProfileEditor() {
+  pendingAvatar = null; avatarToken++;
+  avatarMessage("");
+  $("#profileAvatarUrl").value = "";
+  previewAvatar(S.me.avatar);
   $("#profileName").value = S.me.name || "";
   $("#profileStatus").value = S.me.status || "";
   $("#profileOverlay").hidden = false;
   $("#profileName").focus();
 }
-function closeProfileEditor() { $("#profileOverlay").hidden = true; }
+function closeProfileEditor() { pendingAvatar = null; avatarToken++; $("#profileOverlay").hidden = true; }
 $("#profileClose").onclick = closeProfileEditor;
 $("#profileCancel").onclick = closeProfileEditor;
 $("#profileOverlay").addEventListener("click", e => { if (e.target.id === "profileOverlay") closeProfileEditor(); });
@@ -381,10 +632,55 @@ $("#profileSave").onclick = () => {
   const name = $("#profileName").value.trim();
   if (!name) { alert("이름을 입력해 주세요."); $("#profileName").focus(); return; }
   S.me = { ...S.me, name, status: $("#profileStatus").value.trim() };
-  save(); closeProfileEditor(); render();
+  if (pendingAvatar !== null) S.me.avatar = pendingAvatar;
+  const saved = save();
+  if (!saved && pendingAvatar) alert("저장 공간이 부족할 수 있어요. 사진 크기를 줄여 다시 시도해 주세요.");
+  closeProfileEditor(); render();
 };
+$("#avPick").onclick = () => $("#avFile").click();
+$("#avFile").onchange = async e => {
+  const file = e.target.files && e.target.files[0]; e.target.value = "";
+  if (!file) return;
+  if (!/^image\/(png|jpe?g|webp|gif)$/.test(file.type)) return avatarMessage("PNG, JPG, WEBP, GIF 이미지만 올릴 수 있어요.");
+  if (file.size > 15 * 1024 * 1024) return avatarMessage("파일이 너무 커요. 15MB 이하로 올려 주세요.");
+  const token = ++avatarToken;
+  try {
+    const value = await fileToAvatar(file);
+    if (token !== avatarToken) return;
+    pendingAvatar = value; previewAvatar(value); $("#profileAvatarUrl").value = "";
+    avatarMessage("미리보기에 적용했어요. 저장을 눌러야 반영돼요.", true);
+  } catch (error) { if (token === avatarToken) avatarMessage("이미지를 읽지 못했어요. 다른 파일로 시도해 주세요."); }
+};
+$("#avReset").onclick = () => {
+  avatarToken++; pendingAvatar = D.me.avatar || "";
+  previewAvatar(pendingAvatar); $("#profileAvatarUrl").value = "";
+  avatarMessage("기본 이미지로 바꿨어요. 저장을 눌러야 반영돼요.", true);
+};
+function applyAvatarUrl() {
+  const raw = $("#profileAvatarUrl").value.trim();
+  if (!raw) return avatarMessage("이미지 링크를 붙여넣어 주세요.");
+  const value = /^https:\/\//i.test(raw) ? safeImg(raw) : "";
+  if (!value) return avatarMessage("https:// 로 시작하는 공개 이미지 주소를 입력해 주세요.");
+  const token = ++avatarToken;
+  avatarMessage("이미지를 확인하고 있어요.", true);
+  const image = new Image(); image.referrerPolicy = "no-referrer";
+  image.onload = () => {
+    if (token !== avatarToken) return;
+    pendingAvatar = value; previewAvatar(value);
+    avatarMessage("미리보기에 적용했어요. 저장을 눌러야 반영돼요. 원본 링크가 삭제되면 사진도 보이지 않을 수 있어요.", true);
+  };
+  image.onerror = () => { if (token === avatarToken) avatarMessage("이미지를 불러오지 못했어요. 웹페이지 주소가 아닌 이미지 파일 주소인지 확인해 주세요."); };
+  image.src = value;
+}
+$("#avUrlGo").onclick = applyAvatarUrl;
+$("#profileAvatarUrl").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); applyAvatarUrl(); } });
 $("#profileStatus").addEventListener("keydown", e => { if (e.key === "Enter") $("#profileSave").click(); });
-addEventListener("keydown", e => { if (e.key === "Escape") { closeFriend(); if (!$("#profileOverlay").hidden) closeProfileEditor(); } });
+addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  if (!$("#finOverlay").hidden) { if (!$("#finBack").hidden) closeFinish(); return; }
+  closeFriend();
+  if (!$("#profileOverlay").hidden) closeProfileEditor();
+});
 addEventListener("popstate", () => room && closeRoom());
 render();
 })().catch(e => { console.error(e); showErr(e && e.message || e); }).finally(hideSplash);

@@ -20,14 +20,16 @@
      (choices도 next도 없으면 그 대화는 거기서 끝)
    ============================================================ */
 window.GAME_DATA = {
-  version: 7,
+  version: 8,
 
   /* 구분선이 나온 뒤 다음 대사까지 기다리는 시간 (1000 = 1초) */
   dividerWait: 5000,
 
-  /* 호감도 창 기본값. 캐릭터의 affinity에 적은 항목이 우선합니다.
-     level: 채움 0~100 / color: 채움 색 / dot: 꼬리 위 회색 점 / title: [대괄호] 문구 / desc: 아래 설명(줄바꿈은 \n) */
+  /* 호감도 창 기본값. 단계별 호칭은 캐릭터 affinity.stages에서 설정합니다.
+     팝업 문구에는 {이름}, {주인공이름}, {호감도}를 사용할 수 있습니다. */
   affinityDefault: { level: 100, color: "#ef9090", dot: true, title: "좋아하는 사람" },
+  affinityToast: "{이름}님은 {주인공이름}님을 [{호감도}]라고 생각하고 있습니다.",
+  clearToast: "[{이름}]의 공략이 완료 되었습니다.",
 
   me: { name: "주인공", status: "♪", avatar: "img/me.png" },
 
@@ -36,7 +38,15 @@ window.GAME_DATA = {
       id: "hansegye", name: "한세계", group: "fav", status: "삶에 도파민이 없어",
       avatar: "img/hansegye.png",
       scriptFile: "scripts/hansegye.txt",        // ← 대화는 이 txt 파일에서 읽어옴
-      affinity: { level: 25, color: "#55c4b4", dot: false, title: "스레기의 그녀" },
+      affinity: {
+        level: 25, color: "#55c4b4", dot: false, title: "스레기의 그녀",   // ← 시작 상태
+        stages: [                                                     // ← 호감도가 from 이상이면 호칭이 바뀜
+          { from: 40, title: "일단은 친구?" },
+          { from: 60, title: "언니라고 부를래~" },
+          { from: 80, title: "나는 안돼?" },
+          { from: 100, title: "이미 늦었어." },
+        ],
+      },
     },
     { id: "panda", name: "성솔", group: "fav", status: "🐼",
       avatar: "img/panda.png",
