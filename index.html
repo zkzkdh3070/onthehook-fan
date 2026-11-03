@@ -161,7 +161,7 @@ const all = [...D.characters, ...D.recommended];
 const byId = id => all.find(c => c.id === id);
 const dupIds = all.map(c => c.id).filter((id, i, a) => a.indexOf(id) !== i);
 
-/* ---------- TXT 스크립트 해석 ---------- */
+/* ---------- TXT ---------- */
 function parseScript(txt, file) {
   const nodes = {}, top = []; let cur = null, curId = null, topId = null, owner = null, mode = null, start = null, fin = null;
   const open = (id, isTop) => { const mv = []; if (isTop && cur && (/^(finish|finsih)/i.test(cur.top) === /^(finish|finsih)/i.test(id))) while (cur.lines.length && cur.lines[cur.lines.length - 1][0] === "line") mv.unshift(cur.lines.pop()); cur = nodes[id] = { lines: mv }; curId = id; mode = null; if (isTop) { top.push(id); topId = id; if (/^(finish|finsih)/i.test(id)) fin = fin || id; else start = start || id; } cur.top = topId; };
@@ -199,7 +199,7 @@ function parseScript(txt, file) {
   return { start, fin, nodes };
 }
 
-/* [호감도 +20 | 제목 일단은 친구? | 설명 첫 줄\n둘째 줄 | 색 #55c4b4 | 반복] 해석 */
+/* 호감도 */
 function parseAff(src, file, raw) {
   const sp = {}; let ok = false;
   for (const part of src.split("|").map(v => v.trim()).filter(Boolean)) {
@@ -221,12 +221,12 @@ let S = null;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
 if (!S) { S = { added: [], chats: {}, unread: {}, pos: {}, aff: {}, affDone: {}, clear: {}, mail: D.mail.map(m => !!m.read), me: { ...D.me } }; D.characters.forEach(ensure); }
 if (!S.me) S.me = { ...D.me };
-if (!S.aff) S.aff = {};          /* 예전 저장본 호환 */
+if (!S.aff) S.aff = {};        
 if (!S.affDone) S.affDone = {};
 if (!S.clear) S.clear = {};
-/* 예전에 스크립트 로드가 실패해 저장된 빈 상태를 자동 복구 */
+
 D.characters.concat(D.recommended.filter(r => S.added.includes(r.id))).forEach(c => {
-  if (!S.chats[c.id] || !S.pos[c.id]) { ensure(c); save(); }   /* 나중에 추가한 캐릭터 자동 초기화 */
+  if (!S.chats[c.id] || !S.pos[c.id]) { ensure(c); save(); }  
   const n = c.script && c.script.nodes[c.script.start], p = S.pos[c.id];
   if (!n || (p && p.node && c.script.nodes[p.node])) return;
   S.pos[c.id] = { node: c.script.start, k: 0 };
@@ -247,7 +247,6 @@ function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return tru
 /* ---------- 호감도 ---------- */
 const clamp = v => Math.max(0, Math.min(100, Math.round(+v) || 0));
 const safeColor = v => /^#[0-9a-f]{3,8}$/i.test(String(v)) ? v : "#55c4b4";
-/* 최종 표시값 = 기본값 < affinityDefault < 캐릭터 affinity < 현재 구간(stages) < 스크립트가 직접 바꾼 값 */
 function affOf(c) {
   const st = (S.aff && S.aff[c.id]) || {};
   const base = Object.assign({ level: 25, title: "", color: "#55c4b4", dot: false }, D.affinityDefault, c.affinity);
@@ -468,7 +467,7 @@ function showChoices() {
 }
 function openRoom(c) {
   if (c.id !== "hansegye") {
-    alert("나 말고 누구랑 대화하려고? 아~ 세계는 싫은데~");
+    alert("나 말고 누구랑 대화하려고? 아~ 세계는 싫은데~"); /*---대화거부---*/
     return;
   }
   room = c; S.unread[c.id] = 0; save(); render(); play(c);
